@@ -1,0 +1,139 @@
+# IP-SAKTI Sahayak document manifest
+# Save as: data/manifest.yaml
+# Patterns (with *) match your file names even if they are long or contain extra words.
+
+documents:
+
+  # ---------------- Patents (India) ----------------
+  "patents-act-1970.pdf":
+    title: The Patents Act, 1970
+    short_title: Patents Act, 1970
+    jurisdiction: IN
+    regime: patents
+    doc_type: act
+    authority: Parliament of India
+    effective_from: 1972-04-20
+    source_url: https://ipindia.gov.in
+
+  "patent-rules-2003.pdf":
+    title: The Patents Rules, 2003
+    short_title: Patents Rules, 2003
+    jurisdiction: IN
+    regime: patents
+    doc_type: rules
+    effective_from: 2003-05-02
+    source_url: https://ipindia.gov.in
+
+  "patent-rules-2024.pdf":
+    title: The Patents (Amendment) Rules, 2024
+    short_title: Patents (Amendment) Rules, 2024
+    jurisdiction: IN
+    regime: patents
+    doc_type: rules
+    effective_from: 2024-03-15
+    source_url: https://ipindia.gov.in
+
+  # ---------------- Biodiversity and ABS (India) ----------------
+  "*Biological Diversity Act*":
+    doc_id: biological-diversity-act-2002
+    title: The Biological Diversity Act, 2002 (as amended)
+    short_title: Biological Diversity Act, 2002
+    jurisdiction: IN
+    regime: biodiversity_abs
+    doc_type: act
+    source_url: https://nbaindia.org
+
+  "*BD (Amendment) Act*":
+    doc_id: biological-diversity-amendment-act-2023
+    title: The Biological Diversity (Amendment) Act, 2023
+    short_title: BD (Amendment) Act, 2023
+    jurisdiction: IN
+    regime: biodiversity_abs
+    doc_type: act
+    source_url: https://nbaindia.org
+
+  "*Biological Diversity Rules*":
+    doc_id: biological-diversity-rules-2024
+    title: The Biological Diversity Rules, 2024
+    short_title: Biological Diversity Rules, 2024
+    jurisdiction: IN
+    regime: biodiversity_abs
+    doc_type: rules
+    source_url: https://nbaindia.org
+
+  # ---------------- Drugs, advertising, food (India) ----------------
+  "*Drugs and Cosmetics Act*":
+    doc_id: drugs-and-cosmetics-act-1940
+    title: The Drugs and Cosmetics Act, 1940 (as amended)
+    short_title: Drugs and Cosmetics Act, 1940
+    jurisdiction: IN
+    regime: drugs
+    doc_type: act
+    source_url: https://cdsco.gov.in
+
+  "*Drugs and Magic Remedies*":
+    doc_id: drugs-magic-remedies-act-1954
+    title: The Drugs and Magic Remedies (Objectionable Advertisements) Act, 1954
+    short_title: Drugs and Magic Remedies Act, 1954
+    jurisdiction: IN
+    regime: advertising
+    doc_type: act
+    source_url: https://ayush.gov.in
+
+  "*FSSAI Ayurveda Aahara*":
+    doc_id: fssai-ayurveda-aahara-regulations-2022
+    title: Food Safety and Standards (Ayurveda Aahara) Regulations, 2022
+    short_title: FSS (Ayurveda Aahara) Regulations, 2022
+    jurisdiction: IN
+    regime: food
+    doc_type: regulations
+    source_url: https://fssai.gov.in
+
+  "*Ayurvedic Pharmacopoeia*":
+    doc_id: ayurvedic-pharmacopoeia-of-india
+    title: The Ayurvedic Pharmacopoeia of India
+    short_title: Ayurvedic Pharmacopoeia of India
+    jurisdiction: IN
+    regime: drugs
+    doc_type: guideline
+    source_url: https://ayush.gov.in
+
+  # ---------------- International ----------------
+  "*Convention on*Biological*Diversity*":
+    doc_id: convention-on-biological-diversity
+    title: Convention on Biological Diversity
+    short_title: Convention on Biological Diversity
+    jurisdiction: INTL
+    regime: biodiversity_abs
+    doc_type: treaty
+    effective_from: 1993-12-29
+    source_url: https://www.cbd.int
+
+  "nagoya-protocol-en.pdf":
+    doc_id: nagoya-protocol
+    title: Nagoya Protocol on Access to Genetic Resources and the Fair and Equitable Sharing of Benefits
+    short_title: Nagoya Protocol
+    jurisdiction: INTL
+    regime: biodiversity_abs
+    doc_type: treaty
+    effective_from: 2014-10-12
+    source_url: https://www.cbd.int/abs
+
+  "*TRIPS*":
+    doc_id: trips-agreement
+    title: Agreement on Trade-Related Aspects of Intellectual Property Rights (TRIPS)
+    short_title: TRIPS Agreement
+    jurisdiction: INTL
+    regime: patents
+    doc_type: treaty
+    effective_from: 1995-01-01
+    source_url: https://www.wto.org
+
+  "*WIPO GRATK*":
+    doc_id: wipo-gratk-treaty-2024
+    title: WIPO Treaty on Intellectual Property, Genetic Resources and Associated Traditional Knowledge
+    short_title: WIPO GRATK Treaty, 2024
+    jurisdiction: INTL
+    regime: traditional_knowledge
+    doc_type: treaty
+    source_url: https://www.wipo.int

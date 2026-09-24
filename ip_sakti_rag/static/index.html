@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>IP-SAKTI Sahayak</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Newsreader:opsz,wght@6..72,400;6..72,500&family=Noto+Sans+Devanagari:wght@400;500;600&family=Noto+Sans+Gujarati:wght@400;500;600&family=Noto+Sans+Tamil:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme: light;
+  --bg:#F5F7F4; --surface:#FFFFFF; --surface-2:#FAFBFA;
+  --ink:#17203A; --ink-2:#4A5470; --ink-3:#7C849A;
+  --line:#E2E6EC; --line-2:#D3D9E1;
+  --leaf:#2F6B4F; --leaf-soft:#E4EFE8; --leaf-deep:#1F4D38;
+  --indigo:#34449A; --indigo-soft:#E8EBF8;
+  --haldi:#A8700A; --haldi-soft:#FBF1DC;
+  --rose:#A63D37; --rose-soft:#F9E6E4;
+  --ui:"Manrope","Noto Sans Devanagari","Noto Sans Gujarati",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --read:"Newsreader","Noto Sans Devanagari",Georgia,"Times New Roman",serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px);height:100%}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;height:100%;background:var(--bg);color:var(--ink);font-family:var(--ui);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow:hidden}
+button,select,textarea,input{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--indigo);outline-offset:2px;border-radius:6px}
+a{color:var(--indigo)}
+svg.i{width:18px;height:18px;flex:none;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+
+/* Background */
+.bg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.bg .dots{position:absolute;inset:0;background-image:radial-gradient(rgba(23,32,58,.075) 1px,transparent 1.2px);background-size:22px 22px;-webkit-mask-image:radial-gradient(ellipse 70% 60% at 55% 40%,#000 20%,transparent 75%);mask-image:radial-gradient(ellipse 70% 60% at 55% 40%,#000 20%,transparent 75%)}
+.bg .aura{position:absolute;border-radius:50%;filter:blur(70px);opacity:.75}
+.bg .a1{width:520px;height:520px;background:#D3E7DA;top:-140px;right:12%}
+.bg .a2{width:460px;height:460px;background:#DDE1F6;bottom:-160px;left:22%}
+.bg .a3{width:260px;height:260px;background:#F6E9C8;top:42%;right:-60px;opacity:.55}
+.bg svg.leaf{position:absolute;right:max(3vw,340px);bottom:-60px;width:min(46vw,560px);height:auto;opacity:.9}
+.leaf path{fill:none;stroke:var(--leaf);stroke-linecap:round}
+.leaf .outline{stroke-width:1.4;opacity:.20}
+.leaf .rib{stroke-width:1.2;opacity:.18}
+.leaf .vein{stroke-width:.9;opacity:.13}
+@media (prefers-reduced-motion:no-preference){
+  .bg .a1{animation:drift1 38s ease-in-out infinite alternate}
+  .bg .a2{animation:drift2 44s ease-in-out infinite alternate}
+  @keyframes drift1{to{transform:translate(-90px,70px) scale(1.08)}}
+  @keyframes drift2{to{transform:translate(110px,-60px) scale(.94)}}
+}
+
+/* Shell */
+.app{position:relative;z-index:1;height:100%;display:grid;grid-template-columns:272px minmax(0,1fr) 336px}
+.side{border-right:1px solid var(--line);background:rgba(255,255,255,.62);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);display:flex;flex-direction:column;padding:20px 16px;gap:22px;overflow-y:auto}
+.brand{display:flex;gap:11px;align-items:center;padding:0 6px}
+.brand svg{width:34px;height:34px;flex:none}
+.brand b{display:block;font-size:15.5px;font-weight:700;letter-spacing:-.01em}
+.brand span{display:block;font-size:12px;color:var(--ink-3);line-height:1.3}
+.btn-new{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--ink);color:#fff;border:0;border-radius:10px;padding:11px 14px;font-weight:600;font-size:14px;transition:background .15s}
+.btn-new:hover{background:#26315A}
+.group h2{font-size:12px;font-weight:600;color:var(--ink-3);margin:0 0 6px 8px;letter-spacing:.01em}
+.nav{display:flex;flex-direction:column;gap:2px}
+.nav button{display:flex;align-items:center;gap:11px;width:100%;text-align:left;background:none;border:0;padding:9px 10px;border-radius:9px;font-size:14px;color:var(--ink-2)}
+.nav button:hover{background:rgba(23,32,58,.05);color:var(--ink)}
+.nav .hist{font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}
+.plan{margin-top:auto;border:1px solid var(--line);background:var(--surface);border-radius:14px;padding:14px}
+.plan .tag{display:inline-block;font-size:11.5px;font-weight:600;color:var(--leaf-deep);background:var(--leaf-soft);border-radius:999px;padding:2px 9px}
+.plan p{margin:8px 0 12px;font-size:13px;color:var(--ink-2);line-height:1.45}
+.plan button{width:100%;border:1px solid var(--line-2);background:var(--surface);border-radius:9px;padding:8px;font-size:13.5px;font-weight:600}
+.plan button:hover{border-color:var(--ink-3)}
+
+.main{display:flex;flex-direction:column;min-width:0;height:100%}
+.top{display:flex;align-items:center;gap:12px;padding:14px 24px;border-bottom:1px solid transparent}
+.menu-btn{display:none;background:none;border:0;padding:6px;border-radius:8px}
+.seg{display:inline-flex;background:rgba(255,255,255,.8);border:1px solid var(--line);border-radius:11px;padding:3px;gap:2px}
+.seg button{border:0;background:none;padding:6px 13px;border-radius:8px;font-size:13.5px;font-weight:600;color:var(--ink-3);display:flex;align-items:center;gap:7px}
+.seg button[aria-pressed="true"]{background:var(--ink);color:#fff}
+.seg .flag{width:8px;height:8px;border-radius:50%;background:currentColor;opacity:.7}
+.spacer{flex:1}
+.chip{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;color:var(--ink-2);background:rgba(255,255,255,.8);border:1px solid var(--line);border-radius:999px;padding:5px 11px;white-space:nowrap}
+.chip i{width:7px;height:7px;border-radius:50%;background:var(--leaf);display:block}
+.lang{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.8);border:1px solid var(--line);border-radius:10px;padding:0 4px 0 10px;color:var(--ink-2)}
+.lang select{border:0;background:transparent;padding:7px 4px;font-size:13.5px;font-weight:600;color:var(--ink);outline:none}
+
+.thread{flex:1;overflow-y:auto;padding:8px 24px 24px}
+.inner{max-width:760px;margin:0 auto}
+
+/* Welcome */
+.welcome{padding:6vh 0 10px}
+.welcome h1{font-family:var(--read);font-weight:400;font-size:clamp(32px,4.4vw,48px);line-height:1.08;letter-spacing:-.02em;margin:0 0 14px;max-width:16ch}
+.welcome .lede{font-size:16px;color:var(--ink-2);max-width:56ch;margin:0 0 28px}
+.classify{display:flex;align-items:center;gap:16px;width:100%;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px 18px;margin-bottom:26px;transition:border-color .15s}
+.classify:hover{border-color:var(--leaf)}
+.classify .ico{width:44px;height:44px;border-radius:12px;background:var(--leaf-soft);color:var(--leaf-deep);display:grid;place-items:center;flex:none}
+.classify b{display:block;font-size:15px}
+.classify span{font-size:13.5px;color:var(--ink-2)}
+.classify .go{margin-left:auto;font-size:13px;font-weight:600;color:var(--leaf-deep);white-space:nowrap}
+.sugg-h{font-size:13px;color:var(--ink-3);margin:0 0 10px;font-weight:600}
+.sugg{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.sugg button{text-align:left;background:rgba(255,255,255,.72);border:1px solid var(--line);border-radius:12px;padding:13px 15px;font-size:14px;color:var(--ink);line-height:1.4}
+.sugg button:hover{background:var(--surface);border-color:var(--line-2)}
+.sugg small{display:block;color:var(--ink-3);font-size:12px;margin-top:4px}
+
+/* Messages */
+.msg{margin:26px 0}
+.msg.user{display:flex;flex-direction:column;align-items:flex-end}
+.bubble{background:var(--ink);color:#fff;padding:11px 16px;border-radius:16px 16px 4px 16px;max-width:78%;font-size:15px}
+.trans{font-size:12.5px;color:var(--ink-3);margin-top:6px;max-width:78%;text-align:right}
+.bot{display:flex;gap:14px}
+.avatar{width:32px;height:32px;flex:none;margin-top:2px}
+.card{flex:1;min-width:0;background:rgba(255,255,255,.9);border:1px solid var(--line);border-radius:4px 16px 16px 16px;padding:18px 20px}
+.pipe{display:flex;flex-direction:column;gap:8px;font-size:13.5px;color:var(--ink-3)}
+.pipe div{display:flex;align-items:center;gap:10px;transition:color .2s}
+.pipe .dot{width:16px;height:16px;border-radius:50%;border:1.5px solid var(--line-2);display:grid;place-items:center;flex:none}
+.pipe .on{color:var(--ink)}
+.pipe .on .dot{border-color:var(--indigo);border-top-color:transparent}
+@media (prefers-reduced-motion:no-preference){.pipe .on .dot{animation:spin .8s linear infinite}}
+@keyframes spin{to{transform:rotate(360deg)}}
+.pipe .done{color:var(--ink-2)}
+.pipe .done .dot{background:var(--leaf);border-color:var(--leaf)}
+.pipe .done .dot::after{content:"";width:6px;height:3px;border-left:1.5px solid #fff;border-bottom:1.5px solid #fff;transform:rotate(-45deg) translate(1px,-1px)}
+.answer{font-family:var(--read);font-size:17.5px;line-height:1.65;color:var(--ink)}
+.answer p{margin:0 0 12px}
+.answer ul{margin:0 0 12px;padding-left:20px}
+.answer li{margin-bottom:6px}
+.answer strong{font-weight:500;background:linear-gradient(transparent 62%,var(--haldi-soft) 62%)}
+sup.cite{font-family:var(--ui);font-size:11px;font-weight:700;color:var(--indigo);background:var(--indigo-soft);border-radius:5px;padding:1px 5px;margin-left:2px;cursor:pointer;vertical-align:3px}
+sup.cite:hover{background:var(--indigo);color:#fff}
+.conf{display:flex;align-items:center;gap:12px;margin:16px 0 4px;padding-top:14px;border-top:1px solid var(--line);font-size:13px}
+.conf .bar{flex:1;max-width:180px;height:6px;border-radius:999px;background:var(--line);overflow:hidden}
+.conf .bar i{display:block;height:100%;border-radius:999px;transition:width .8s ease}
+.conf b{font-weight:600}
+.conf .why{color:var(--ink-3)}
+.lvl-high{color:var(--leaf-deep)} .lvl-high .bar i{background:var(--leaf)}
+.lvl-med{color:var(--haldi)} .lvl-med .bar i{background:#D8A032}
+.lvl-low{color:var(--rose)} .lvl-low .bar i{background:var(--rose)}
+.srcs{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.srcs button{font-size:12px;border:1px solid var(--line);background:var(--surface-2);border-radius:8px;padding:4px 9px;color:var(--ink-2);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.srcs button b{color:var(--indigo);margin-right:4px}
+.escal{margin-top:14px;background:var(--rose-soft);border-radius:12px;padding:12px 14px;font-size:13.5px;color:#6E2622;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.escal p{margin:0;flex:1;min-width:200px}
+.actions{display:flex;gap:6px;margin-top:14px;flex-wrap:wrap}
+.act{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface);border-radius:9px;padding:6px 11px;font-size:13px;font-weight:600;color:var(--ink-2)}
+.act:hover{border-color:var(--line-2);color:var(--ink)}
+.act.expert{background:var(--ink);color:#fff;border-color:var(--ink)}
+.act.expert:hover{background:#26315A;color:#fff}
+.act svg.i{width:15px;height:15px}
+
+/* Composer */
+.composer{padding:10px 24px 18px}
+.box{max-width:760px;margin:0 auto;background:var(--surface);border:1px solid var(--line-2);border-radius:18px;padding:10px 10px 10px 16px;display:flex;align-items:flex-end;gap:8px;box-shadow:0 1px 0 rgba(23,32,58,.03),0 12px 32px -18px rgba(23,32,58,.25);transition:border-color .15s}
+.box:focus-within{border-color:var(--indigo)}
+.box textarea{flex:1;border:0;outline:none;resize:none;background:transparent;font-size:15px;line-height:1.5;padding:7px 0;max-height:160px}
+.icon-btn{width:38px;height:38px;border-radius:11px;border:0;display:grid;place-items:center;background:transparent;color:var(--ink-2);flex:none}
+.icon-btn:hover{background:rgba(23,32,58,.06)}
+.icon-btn.send{background:var(--leaf);color:#fff}
+.icon-btn.send:hover{background:var(--leaf-deep)}
+.icon-btn.mic.live{background:var(--rose-soft);color:var(--rose)}
+@media (prefers-reduced-motion:no-preference){.icon-btn.mic.live{animation:pulse 1.2s ease-in-out infinite}}
+@keyframes pulse{50%{box-shadow:0 0 0 7px rgba(166,61,55,.12)}}
+.fine{max-width:760px;margin:8px auto 0;font-size:12px;color:var(--ink-3);text-align:center}
+
+/* Right panel */
+.panel{border-left:1px solid var(--line);background:rgba(255,255,255,.62);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);padding:20px 18px;overflow-y:auto;display:flex;flex-direction:column;gap:22px}
+.panel h2{font-size:13px;font-weight:700;margin:0 0 10px;display:flex;align-items:center;justify-content:space-between}
+.panel h2 span{font-weight:500;color:var(--ink-3);font-size:12px}
+.prod{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:15px}
+.prod.empty{text-align:left;color:var(--ink-2);font-size:13.5px}
+.prod.empty button{margin-top:10px;border:1px solid var(--leaf);color:var(--leaf-deep);background:var(--leaf-soft);border-radius:9px;padding:7px 12px;font-weight:600;font-size:13px}
+.prod .cat{font-family:var(--read);font-size:22px;line-height:1.2;margin:2px 0 12px}
+.prod dl{margin:0;display:grid;gap:10px}
+.prod dt{font-size:11.5px;color:var(--ink-3);font-weight:600}
+.prod dd{margin:1px 0 0;font-size:13.5px;color:var(--ink)}
+.src{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 13px;margin-bottom:8px;transition:border-color .2s,box-shadow .2s}
+.src.hl{border-color:var(--indigo);box-shadow:0 0 0 3px var(--indigo-soft)}
+.src .row{display:flex;gap:10px;align-items:flex-start}
+.src .n{font-size:11px;font-weight:700;color:var(--indigo);background:var(--indigo-soft);border-radius:6px;min-width:22px;height:20px;display:grid;place-items:center;flex:none}
+.src b{display:block;font-size:13.5px;font-weight:600;line-height:1.35}
+.src .sec{font-size:13px;color:var(--ink-2)}
+.src .meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;align-items:center}
+.pill{font-size:11px;font-weight:600;border-radius:999px;padding:2px 8px;background:var(--leaf-soft);color:var(--leaf-deep)}
+.pill.intl{background:var(--indigo-soft);color:var(--indigo)}
+.pill.warn{background:var(--haldi-soft);color:var(--haldi)}
+.src a{font-size:12px;font-weight:600;margin-left:auto;text-decoration:none}
+.src a:hover{text-decoration:underline}
+.empty-note{font-size:13.5px;color:var(--ink-3);border:1px dashed var(--line-2);border-radius:12px;padding:14px}
+.helpers{display:grid;gap:8px}
+.helpers button{display:flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--line);border-radius:11px;padding:10px 12px;font-size:13.5px;text-align:left;color:var(--ink)}
+.helpers button:hover{border-color:var(--line-2)}
+.helpers small{display:block;color:var(--ink-3);font-size:12px}
+
+/* Modal */
+.overlay{position:fixed;inset:0;background:rgba(23,32,58,.28);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;z-index:50;padding:20px}
+.overlay.open{display:flex}
+.modal{background:var(--surface);border-radius:20px;width:min(520px,100%);max-height:88vh;overflow-y:auto;padding:24px;position:relative;box-shadow:0 30px 80px -30px rgba(23,32,58,.45)}
+.modal h3{font-family:var(--read);font-weight:400;font-size:26px;line-height:1.2;margin:0 0 6px;padding-right:36px}
+.modal .sub{color:var(--ink-2);font-size:14px;margin:0 0 18px}
+.close{position:absolute;top:16px;right:16px}
+.steps{display:flex;gap:5px;margin-bottom:18px}
+.steps i{height:4px;flex:1;border-radius:999px;background:var(--line)}
+.steps i.on{background:var(--leaf)}
+.q{font-size:17px;font-weight:600;margin:0 0 14px;line-height:1.35}
+.opts{display:grid;gap:8px}
+.opts button{text-align:left;border:1px solid var(--line-2);background:var(--surface);border-radius:12px;padding:12px 14px;font-size:14.5px}
+.opts button:hover{border-color:var(--leaf);background:var(--leaf-soft)}
+.opts small{display:block;color:var(--ink-3);font-size:12.5px;margin-top:2px}
+.result .cat{font-family:var(--read);font-size:28px;margin:4px 0 14px;line-height:1.15}
+.result dl{margin:0 0 18px;display:grid;gap:12px}
+.result dt{font-size:12px;color:var(--ink-3);font-weight:600}
+.result dd{margin:2px 0 0;font-size:14px}
+.row-btns{display:flex;gap:8px;flex-wrap:wrap}
+.primary{background:var(--ink);color:#fff;border:0;border-radius:10px;padding:10px 16px;font-weight:600;font-size:14px}
+.primary:hover{background:#26315A}
+.ghost{background:none;border:1px solid var(--line-2);border-radius:10px;padding:10px 16px;font-weight:600;font-size:14px}
+.expert-row{display:flex;gap:12px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:11px 13px;margin-bottom:8px;cursor:pointer}
+.expert-row:has(input:checked){border-color:var(--indigo);background:var(--indigo-soft)}
+.expert-row input{accent-color:var(--indigo)}
+.expert-row b{display:block;font-size:14px}
+.expert-row span{font-size:12.5px;color:var(--ink-2)}
+.price{display:flex;justify-content:space-between;align-items:baseline;margin:16px 0;padding:12px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);font-size:14px;color:var(--ink-2)}
+.price b{font-size:20px;color:var(--ink);font-weight:700}
+.links{display:grid;gap:8px}
+.links a{display:flex;justify-content:space-between;align-items:center;gap:10px;border:1px solid var(--line);border-radius:12px;padding:11px 14px;text-decoration:none;color:var(--ink)}
+.links a:hover{border-color:var(--indigo)}
+.links b{display:block;font-size:14px}
+.links span{font-size:12.5px;color:var(--ink-3)}
+.toast{position:fixed;left:50%;bottom:calc(28px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);background:var(--ink);color:#fff;padding:10px 16px;border-radius:12px;font-size:13.5px;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;z-index:60;max-width:90vw}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.scrim{display:none}
+
+@media (max-width:1180px){
+  .app{grid-template-columns:260px minmax(0,1fr)}
+  .panel{display:none}
+  .bg svg.leaf{right:2vw}
+}
+@media (max-width:780px){
+  .app{grid-template-columns:minmax(0,1fr)}
+  .side{position:fixed;top:0;left:0;bottom:0;width:282px;z-index:40;transform:translateX(-100%);transition:transform .25s;background:rgba(255,255,255,.96);padding-top:calc(20px + env(safe-area-inset-top,0px))}
+  .side.open{transform:none}
+  .scrim.open{display:block;position:fixed;inset:0;background:rgba(23,32,58,.25);z-index:39}
+  .menu-btn{display:grid;place-items:center}
+  .top{padding:10px 14px;gap:8px;flex-wrap:wrap}
+  .chip{display:none}
+  .thread{padding:4px 14px 18px}
+  .composer{padding:8px 12px 12px}
+  .sugg{grid-template-columns:1fr}
+  .bubble,.trans{max-width:90%}
+  .avatar{display:none}
+  .card{padding:15px 16px}
+  .answer{font-size:16.5px}
+  .classify .go{display:none}
+}
+
+:root{--ui:"Manrope","Noto Sans Devanagari","Noto Sans Gujarati","Noto Sans Tamil",system-ui,-apple-system,"Segoe UI",sans-serif;--read:"Newsreader","Noto Sans Devanagari","Noto Sans Gujarati","Noto Sans Tamil",Georgia,"Times New Roman",serif}
+html:not([lang="en"]) .answer{font-size:16px;line-height:1.9}
+html:not([lang="en"]) .welcome h1{font-size:clamp(26px,3.4vw,38px);line-height:1.35;max-width:24ch;letter-spacing:0}
+html:not([lang="en"]) .prod .cat,html:not([lang="en"]) .result .cat{font-size:20px;line-height:1.4}
+html:not([lang="en"]) .modal h3{font-size:22px;line-height:1.4}
+html[lang="ta"] body{font-size:14px}
+.escal small{opacity:.75}
+.chip.off i{background:var(--rose)}.chip.off{color:var(--rose)}
+.chip.wait i{background:#D8A032}
+.how{margin-top:12px;border-top:1px dashed var(--line);padding-top:10px;font-size:13px;color:var(--ink-2)}
+.how summary{cursor:pointer;font-weight:600;color:var(--ink-3);list-style:none;display:inline-flex;align-items:center;gap:6px}
+.how summary::-webkit-details-marker{display:none}
+.how summary::before{content:"";width:7px;height:7px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(-45deg);transition:transform .15s}
+.how[open] summary::before{transform:rotate(45deg)}
+.how dl{display:grid;grid-template-columns:max-content 1fr;gap:6px 14px;margin:10px 0 0}
+.how dt{color:var(--ink-3)}.how dd{margin:0}.how ul{margin:0;padding-left:16px}.how li{margin-bottom:2px}
+.fb{margin-left:auto;display:flex;gap:4px}
+.act.on{background:var(--leaf-soft)!important;box-shadow:0 0 0 1px var(--leaf)!important;color:var(--leaf-deep)}
+.src[role="button"]{cursor:pointer}
+.modal.wide{width:min(720px,100%)}
+.excerpt{border-radius:12px;padding:12px 14px;font-family:var(--read);font-size:15px;line-height:1.65;max-height:42vh;overflow:auto;white-space:pre-wrap}
+.doc{border-radius:12px;padding:12px 14px;margin-bottom:8px}
+.doc b{font-size:14px}
+.empty-hist{font-size:12.5px;color:var(--ink-3);padding:6px 10px;line-height:1.4}
+a.primary{color:#fff}
+.answer p{white-space:pre-line}
+/* ================= Matte glass theme ================= */
+:root{
+  --mist:#EDF1EC; --haldi-2:#C99A2E;
+  --glass:rgba(255,255,255,.56); --glass-hi:rgba(255,255,255,.74); --glass-lo:rgba(255,255,255,.42);
+  --glass-line:rgba(255,255,255,.75); --glass-edge:rgba(23,32,58,.07);
+  --blur:blur(22px) saturate(150%);
+  --noise:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.09  0 0 0 0 0.12  0 0 0 0 0.2  0 0 0 .07 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  --lift:0 1px 0 rgba(255,255,255,.9) inset,0 0 0 1px var(--glass-edge),0 24px 48px -30px rgba(23,32,58,.32);
+  --lift-sm:0 1px 0 rgba(255,255,255,.85) inset,0 0 0 1px var(--glass-edge),0 10px 22px -18px rgba(23,32,58,.28);
+}
+body{background:var(--mist)}
+
+/* Ground: botanical line art + soft light */
+.bg .aura{filter:blur(80px)}
+.bg .a1{width:640px;height:640px;background:#C9E1D1;opacity:.95;top:-200px;right:18%}
+.bg .a2{width:600px;height:600px;background:#D3D9F3;opacity:.9;bottom:-220px;left:12%}
+.bg .a3{width:380px;height:380px;background:#F1E0B8;opacity:.6;top:34%;right:-80px}
+.bg .dots{opacity:.7}
+.bg svg.leaf{opacity:1;right:max(2vw,300px);bottom:-80px;width:min(52vw,640px)}
+.bg svg.leaf2{position:absolute;left:-120px;top:-60px;width:min(34vw,420px);height:auto;transform:rotate(-28deg)}
+.leaf .outline{opacity:.28;stroke-width:1.5}
+.leaf .rib{opacity:.26}
+.leaf .vein{opacity:.2;stroke-width:1}
+body::after{content:"";position:fixed;inset:0;background-image:var(--noise);opacity:.55;pointer-events:none;z-index:0}
+
+/* Floating panes */
+.app{gap:14px;padding:14px;grid-template-columns:264px minmax(0,1fr) 340px}
+.side,.panel{border:0;border-radius:22px;background-color:var(--glass);background-image:var(--noise);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);box-shadow:var(--lift)}
+.side{padding:18px 14px}
+.panel{padding:18px 16px}
+.main{min-height:0}
+
+/* Top bar */
+.top{margin:0 0 4px;padding:8px 10px;border-radius:18px;background-color:var(--glass-lo);background-image:var(--noise);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);box-shadow:var(--lift-sm)}
+.seg,.lang,.chip{background:rgba(255,255,255,.62);border-color:rgba(255,255,255,.8);box-shadow:0 0 0 1px var(--glass-edge)}
+.seg button[aria-pressed="true"]{background:var(--ink);box-shadow:0 6px 14px -8px rgba(23,32,58,.6)}
+
+/* Sidebar */
+.btn-new{border-radius:12px;box-shadow:0 10px 20px -12px rgba(23,32,58,.55)}
+.nav button:hover{background:rgba(255,255,255,.55)}
+.plan{background:rgba(255,255,255,.5);border:0;box-shadow:var(--lift-sm)}
+
+/* Welcome */
+.welcome{padding:7vh 0 10px}
+.welcome h1{font-size:clamp(34px,4.3vw,52px);letter-spacing:-.025em;max-width:15ch}
+.classify,.sugg button{border:0;background-color:var(--glass);background-image:var(--noise);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);box-shadow:var(--lift-sm)}
+.classify{border-radius:18px}
+.classify:hover,.sugg button:hover{background-color:var(--glass-hi)}
+.classify .ico{background:rgba(47,107,79,.12)}
+.sugg button{border-radius:16px}
+
+/* Messages */
+.bubble{background:rgba(23,32,58,.9);backdrop-filter:blur(10px);box-shadow:0 12px 24px -16px rgba(23,32,58,.7);border-radius:18px 18px 6px 18px}
+.card{border:0;border-radius:6px 20px 20px 20px;background-color:var(--glass-hi);background-image:var(--noise);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);box-shadow:var(--lift);padding:20px 22px}
+.answer{color:var(--ink)}
+.conf{border-top-color:rgba(23,32,58,.08)}
+.conf .bar{background:rgba(23,32,58,.08)}
+.lvl-med .bar i{background:var(--haldi-2)}
+.act{background:rgba(255,255,255,.66);border-color:rgba(255,255,255,.85);box-shadow:0 0 0 1px var(--glass-edge)}
+.act.expert{background:var(--ink);box-shadow:none}
+.escal{background:rgba(249,230,228,.75);border-radius:14px;box-shadow:0 0 0 1px rgba(166,61,55,.12)}
+.how{border-top-color:rgba(23,32,58,.09)}
+
+/* Documents used (grouped by PDF) */
+.used{margin-top:14px;border-radius:16px;background:rgba(255,255,255,.5);box-shadow:0 0 0 1px var(--glass-edge);padding:12px}
+.used-h{display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:700;color:var(--ink-2);margin:0 2px 10px}
+.used-h span{font-weight:500;color:var(--ink-3)}
+.used-doc{display:flex;gap:12px;align-items:flex-start;padding:10px;border-radius:12px;background:rgba(255,255,255,.62);box-shadow:0 0 0 1px var(--glass-edge)}
+.used-doc+.used-doc{margin-top:8px}
+.pdf-ic{width:34px;height:40px;flex:none;border-radius:6px;background:linear-gradient(180deg,#fff,#F1F3F6);box-shadow:0 0 0 1px rgba(23,32,58,.12);position:relative;display:grid;place-items:end center;padding-bottom:5px;font-size:8.5px;font-weight:800;color:var(--rose);letter-spacing:.02em}
+.pdf-ic::before{content:"";position:absolute;top:0;right:0;width:10px;height:10px;background:linear-gradient(225deg,var(--mist) 50%,#DDE2E8 50%);border-bottom-left-radius:3px}
+.pdf-ic::after{content:"";position:absolute;left:7px;right:7px;top:12px;height:10px;background:repeating-linear-gradient(180deg,rgba(23,32,58,.18) 0 1.5px,transparent 1.5px 4px)}
+.ud-main{flex:1;min-width:0}
+.ud-main b{display:block;font-size:13.5px;line-height:1.35}
+.ud-file{display:block;font-size:11.5px;color:var(--ink-3);margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ud-cites{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.ud-cites button{font-size:12px;border:0;background:var(--indigo-soft);color:var(--ink);border-radius:8px;padding:3px 8px 3px 4px;display:inline-flex;align-items:center;gap:6px}
+.ud-cites button b{display:grid;place-items:center;min-width:18px;height:18px;border-radius:5px;background:var(--indigo);color:#fff;font-size:10.5px}
+.ud-cites button:hover{background:#DCE1F6}
+.ud-open{flex:none;align-self:center;font-size:12.5px;font-weight:700;text-decoration:none;color:var(--indigo);padding:6px 10px;border-radius:9px;background:rgba(255,255,255,.8);box-shadow:0 0 0 1px var(--glass-edge)}
+.ud-open:hover{background:#fff}
+.ud-tags{display:inline-flex;gap:5px;margin-left:6px;vertical-align:1px}
+.ud-tags .pill{font-size:10.5px;padding:1px 7px}
+
+/* Composer */
+.composer{padding:8px 0 4px}
+.box{border:0;border-radius:22px;background-color:var(--glass-hi);background-image:var(--noise);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);box-shadow:var(--lift)}
+.box:focus-within{box-shadow:0 1px 0 rgba(255,255,255,.9) inset,0 0 0 2px rgba(52,68,154,.35),0 24px 48px -30px rgba(23,32,58,.32)}
+.thread{padding:8px 14px 18px}
+
+/* Right panel cards */
+.prod,.src,.helpers button,.empty-note{border:0;background:rgba(255,255,255,.6);box-shadow:0 0 0 1px var(--glass-edge)}
+.empty-note{border:0}
+.src.hl{box-shadow:0 0 0 2px var(--indigo),0 0 0 6px var(--indigo-soft)}
+.prod.empty button{border:0;background:rgba(47,107,79,.12)}
+
+/* Modals and toast */
+.overlay{background:rgba(23,32,58,.16);backdrop-filter:blur(8px) saturate(120%);-webkit-backdrop-filter:blur(8px) saturate(120%)}
+.modal{background-color:rgba(255,255,255,.8);background-image:var(--noise);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);box-shadow:var(--lift);border-radius:24px}
+.opts button,.expert-row,.links a,.doc{border:0;background:rgba(255,255,255,.66);box-shadow:0 0 0 1px var(--glass-edge)}
+.opts button:hover{background:rgba(228,239,232,.9)}
+.expert-row:has(input:checked){box-shadow:0 0 0 2px var(--indigo)}
+.excerpt{border:0;background:rgba(255,255,255,.66);box-shadow:0 0 0 1px var(--glass-edge)}
+.toast{background:rgba(23,32,58,.9);backdrop-filter:blur(10px)}
+
+@media (max-width:1180px){.app{grid-template-columns:250px minmax(0,1fr)}}
+@media (max-width:780px){
+  .app{grid-template-columns:minmax(0,1fr);padding:8px;gap:8px}
+  .side{top:8px;left:8px;bottom:8px;border-radius:20px;background-color:rgba(255,255,255,.86)}
+  .top{border-radius:14px}
+  .used-doc{flex-wrap:wrap}.ud-open{margin-left:46px}
+}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+  .side,.panel,.card,.box,.modal,.top{background-color:rgba(255,255,255,.9)}
+}
+
+</style>
+</head>
+<body>
+<div class="bg" aria-hidden="true">
+  <div class="dots"></div><div class="aura a1"></div><div class="aura a2"></div><div class="aura a3"></div>
+  <svg class="leaf" id="leaf" viewBox="0 0 600 820"></svg>
+</div>
+
+<div class="app">
+  <aside class="side" id="side">
+    <div class="brand">
+      <svg viewBox="0 0 34 34" aria-hidden="true"><circle cx="17" cy="17" r="16" fill="#17203A"/><circle cx="17" cy="17" r="12.5" fill="none" stroke="#3F4B72" stroke-width=".8"/><path d="M17 7.5c5.6 4.4 6.4 11 0 19c-6.4-8-5.6-14.6 0-19z" fill="none" stroke="#CFE6D8" stroke-width="1.5"/><path d="M17 10v15M17 15l-3-2.2M17 15l3-2.2M17 19l-3.4-2.4M17 19l3.4-2.4" stroke="#CFE6D8" stroke-width="1" stroke-linecap="round"/></svg>
+      <div><b>IP-SAKTI Sahayak</b><span data-t="brandSub"></span></div>
+    </div>
+    <button class="btn-new" id="newBtn"><svg class="i" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg><span data-t="newQ"></span></button>
+    <div class="group">
+      <h2 data-t="tools"></h2>
+      <nav class="nav">
+        <button data-tool="classify"><svg class="i" viewBox="0 0 24 24"><path d="M12 3c6 4.5 7 11 0 18c-7-7-6-13.5 0-18z"/><path d="M12 7v12"/></svg><span data-t="tClassify"></span></button>
+        <button data-tool="abs"><svg class="i" viewBox="0 0 24 24"><path d="M12 4v16M6 20h12M4 8h16M7 8l-3 6a3 3 0 0 0 6 0zM17 8l-3 6a3 3 0 0 0 6 0z"/></svg><span data-t="tAbs"></span></button>
+        <button data-tool="prior"><svg class="i" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></svg><span data-t="tPrior"></span></button>
+        <button data-tool="forms"><svg class="i" viewBox="0 0 24 24"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5M10 13h6M10 17h6"/></svg><span data-t="tForms"></span></button>
+        <button data-tool="library"><svg class="i" viewBox="0 0 24 24"><path d="M4 5h4v15H4zM10 5h4v15h-4zM16 6l3.5-1 3 14-3.5 1z"/></svg><span data-t="library"></span></button>
+        <button data-tool="desk"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></svg><span data-t="expertDesk"></span></button>
+      </nav>
+    </div>
+    <!-- Chat history: intentionally not translated -->
+    <div class="group">
+      <h2>Recent</h2>
+      <nav class="nav" id="recent"></nav>
+    </div>
+    <div class="plan">
+      <span class="tag" data-t="planTag"></span>
+      <p data-t="planText"></p>
+      <button id="proBtn" data-t="planBtn"></button>
+    </div>
+  </aside>
+  <div class="scrim" id="scrim"></div>
+
+  <main class="main">
+    <header class="top">
+      <button class="menu-btn" id="menuBtn" aria-label="Menu"><svg class="i" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+      <div class="seg" role="group" aria-label="Jurisdiction">
+        <button aria-pressed="true" data-j="in"><span class="flag"></span><span data-t="india"></span></button>
+        <button aria-pressed="false" data-j="intl"><span class="flag"></span><span data-t="intl"></span></button>
+      </div>
+      <div class="spacer"></div>
+      <span class="chip wait" id="status"><i></i><span id="statusText">…</span></span>
+      <label class="lang">
+        <svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 3.5 5.7 3.5 9s-1 6.3-3.5 9c-2.5-2.7-3.5-5.7-3.5-9s1-6.3 3.5-9z"/></svg>
+        <select id="lang" aria-label="Language">
+          <option value="en">English</option><option value="hi">हिन्दी</option><option value="gu">ગુજરાતી</option><option value="mr">मराठी</option><option value="ta">தமிழ்</option>
+        </select>
+      </label>
+    </header>
+
+    <div class="thread" id="thread">
+      <div class="inner">
+        <section class="welcome" id="welcome">
+          <h1 data-t="h1"></h1>
+          <p class="lede" data-t="lede"></p>
+          <button class="classify" data-tool="classify">
+            <span class="ico"><svg class="i" viewBox="0 0 24 24" style="width:22px;height:22px"><path d="M12 3c6 4.5 7 11 0 18c-7-7-6-13.5 0-18z"/><path d="M12 7v12M12 11l-3-2M12 11l3-2M12 15l-3.5-2.5M12 15l3.5-2.5"/></svg></span>
+            <span><b data-t="clsTitle"></b><span data-t="clsText"></span></span>
+            <span class="go" data-t="clsGo"></span>
+          </button>
+          <p class="sugg-h" data-t="common"></p>
+          <div class="sugg">
+            <button data-sq="s1"><span data-t="s1"></span><small data-t="s1t"></small></button>
+            <button data-sq="s2"><span data-t="s2"></span><small data-t="s2t"></small></button>
+            <button data-sq="s3"><span data-t="s3"></span><small data-t="s3t"></small></button>
+            <button data-tool="classify"><span data-t="s4"></span><small data-t="s4t"></small></button>
+          </div>
+        </section>
+        <div id="msgs"></div>
+      </div>
+    </div>
+
+    <div class="composer">
+      <div class="box">
+        <textarea id="input" rows="1" aria-label="Question"></textarea>
+        <button class="icon-btn mic" id="mic" aria-label="Voice"><svg class="i" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></button>
+        <button class="icon-btn send" id="send" aria-label="Send"><svg class="i" viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></button>
+      </div>
+      <p class="fine" data-t="fine"></p>
+    </div>
+  </main>
+
+  <aside class="panel" id="panel">
+    <section><h2 data-t="yourProduct"></h2><div id="prod"></div></section>
+    <section><h2><span style="color:var(--ink);font-weight:700;font-size:13px" data-t="sources"></span><span id="srcCount"></span></h2><div id="srcList"></div></section>
+    <section>
+      <h2 data-t="helpers"></h2>
+      <div class="helpers">
+        <button data-tool="abs"><svg class="i" viewBox="0 0 24 24"><path d="M12 4v16M6 20h12M4 8h16M7 8l-3 6a3 3 0 0 0 6 0zM17 8l-3 6a3 3 0 0 0 6 0z"/></svg><span><span data-t="hAbs"></span><small data-t="hAbsS"></small></span></button>
+        <button data-tool="prior"><svg class="i" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></svg><span><span data-t="hPrior"></span><small data-t="hPriorS"></small></span></button>
+        <button data-tool="forms"><svg class="i" viewBox="0 0 24 24"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5"/></svg><span><span data-t="hForms"></span><small data-t="hFormsS"></small></span></button>
+      </div>
+    </section>
+  </aside>
+</div>
+
+<div class="overlay" id="overlay" role="dialog" aria-modal="true"><div class="modal" id="modal"></div></div>
+<div class="toast" id="toast" role="status"></div>
+<script>
+const T={
+en:{brandSub:"Ayurveda IP and regulatory guide",newQ:"New question",tools:"Tools",tClassify:"Classify my product",tAbs:"Access and benefit sharing",tPrior:"Prior-art and TKDL",tForms:"Official forms and portals",planTag:"Free plan",planText:"Classification and cited answers are always free. Expert review starts at ₹299 per question.",planBtn:"See Pro at ₹499 a month",india:"India",intl:"International",corpus:"Law corpus updated 18 Sep 2026",
+h1:"Ask about IP and regulation for your Ayurveda product.",lede:"Every answer is drawn from official law and cites the exact Act and section. Switch between Indian and international rules at the top.",ph:"Ask in any language, for example: can I patent my herbal oil?",
+clsTitle:"Not sure what category your product is?",clsText:"Answer up to four questions to see which rules, licences and IP routes apply.",clsGo:"Start classification",common:"Common questions",
+s1:"Can I patent a classical Ayurvedic formulation?",s1t:"Patents",s2:"Do I need NBA approval to sell a product with ashwagandha?",s2t:"Access and benefit sharing",s3:"What can I claim in ads for my herbal syrup?",s3t:"Advertising",s4:"Is my product a classical or proprietary medicine?",s4t:"Product category",
+fine:"Prototype with sample answers. Guidance only, not legal advice. Low-confidence answers are sent for expert review.",yourProduct:"Your product",prodEmpty:"No category yet. Classifying your product tailors every answer to the rules that apply to it.",sources:"Sources",noneYet:"none yet",cited:"cited",srcEmpty:"Ask a question and the exact Acts, sections and official links behind the answer appear here.",srcNone:"No verified source matched this question closely enough.",
+helpers:"Compliance helpers",hAbs:"ABS helper",hAbsS:"Which NBA or SBB step you need",hPrior:"Prior-art pointer",hPriorS:"TKDL, patents and journals",hForms:"Forms and portals",hFormsS:"IP India, NBA, Ayush, FSSAI",
+steps:["Rewriting your question four ways","Searching Indian law and gazette notifications","Searching WIPO, Nagoya and patent office texts","Ranking the most relevant sections","Checking each claim against its source"],
+conf:["High confidence","Every claim is backed by a current source","Medium confidence","One source has a changing status","Low confidence","Not enough verified sources"],
+escLow:"This question needs a human check before you rely on it.",escChg:"Part of this answer depends on a rule whose status is changing.",escRev:"A verified expert can review it within 48 to 72 hours.",askFor:"Ask an expert for ₹599",ask:"Ask an expert",listen:"Listen",copy:"Copy",
+note:"Translated to English with Bhashini for search",pIn:"India",pIntl:"International",pCur:"Current",pOff:"Official source",review:"Status under review",ratify:"Check ratification",W:{s:"Section",a:"Article",r:"Rule"},
+tIn:"Answering under Indian law",tIntl:"Answering under international regimes (WIPO, Nagoya, EPO, USPTO)",copied:"Answer copied",copyNo:"Copy is blocked in this browser",reading:"Reading aloud. In production this uses Bhashini voices.",audioNo:"Audio is not available in this browser",listening:"Listening with Bhashini speech recognition",saved:"Saved. Answers are now tailored to:",langSet:"Interface and answers are now in English",
+clsH:"Classify your product",clsSub:"The category decides which regulator, licence and IP route applies.",resLead:"Your product is most likely a",lReg:"Regulator",lLaw:"Governing law",lIp:"IP route",lAbs:"Access and benefit sharing",useThis:"Use this for my answers",restart:"Start again",classified:"Classified",
+exH:"Ask a verified expert",exSub:"Your question, the AI answer and its sources are shared with the expert so you don't repeat yourself.",yourQ:"Your question",exA:"IP attorney",exAS:"Patents, trademarks, TK protection",exR:"Regulatory consultant",exRS:"Ayush licensing, advertising, FSSAI",exB:"ABS specialist",exBS:"NBA and State Biodiversity Board filings",exTime:"Written reply in 48 to 72 hours",exReq:"Request review for ₹599",cancel:"Cancel",exFiling:"Need a filing done? Filing assistance through registered patent agents starts at ₹3,000.",
+doneH:"Review requested",doneSub:"A verified expert will reply within 48 to 72 hours. You'll get the reply here and by SMS.",done:"Done",
+proH:"Pro for startups and MSMEs",proSub:"Everything in Free, plus tools for teams that file and sell regularly.",included:"Included",proList:"Saved product dossiers, law-change alerts, compliance checklists, priority expert review and PDF reports",proPrice:"Monthly, or ₹4,999 a year",startPro:"Start Pro",stayFree:"Stay on Free",
+priorH:"Prior-art pointer",priorSub:"Check whether your formulation is already documented before you file. Full TKDL access is limited to patent offices, so start with these open sources.",pTk:"What TKDL covers and how offices use it",pLens:"Free global patent and scholarly search",pGp:"Full-text patent search across offices",pPub:"Published research on herbs and formulations",
+formsH:"Official forms and portals",formsSub:"File only through official portals. Links open the government site directly.",fIp:"Patents, trademarks and designs e-filing",fNbaT:"National Biodiversity Authority",fNba:"ABS approvals and forms",fAyT:"Ministry of Ayush",fAy:"Drug rules, notifications and advisories",fFs:"Food licensing and registration",fWi:"PCT filings and international treaties",open:"Open",
+mic:"Do I need NBA approval to sell a product with ashwagandha?"},
+
+hi:{brandSub:"आयुर्वेद IP और नियामक मार्गदर्शक",newQ:"नया प्रश्न",tools:"टूल",tClassify:"मेरे उत्पाद का वर्गीकरण करें",tAbs:"पहुँच और लाभ-साझाकरण",tPrior:"प्रायर आर्ट और TKDL",tForms:"आधिकारिक फ़ॉर्म और पोर्टल",planTag:"निःशुल्क योजना",planText:"वर्गीकरण और स्रोत-सहित उत्तर हमेशा निःशुल्क हैं। विशेषज्ञ समीक्षा ₹299 प्रति प्रश्न से शुरू।",planBtn:"Pro देखें, ₹499 प्रति माह",india:"भारत",intl:"अंतरराष्ट्रीय",corpus:"कानून संग्रह 18 सितंबर 2026 को अपडेट",
+h1:"अपने आयुर्वेद उत्पाद के IP और नियमों के बारे में पूछें।",lede:"हर उत्तर आधिकारिक कानून से लिया जाता है और सटीक अधिनियम व धारा का उल्लेख करता है। ऊपर भारतीय और अंतरराष्ट्रीय नियमों के बीच बदलें।",ph:"किसी भी भाषा में पूछें, जैसे: क्या मैं अपने हर्बल तेल का पेटेंट करा सकता हूँ?",
+clsTitle:"पता नहीं आपका उत्पाद किस श्रेणी में है?",clsText:"अधिकतम चार प्रश्नों के उत्तर दें और जानें कौन से नियम, लाइसेंस और IP मार्ग लागू होते हैं।",clsGo:"वर्गीकरण शुरू करें",common:"सामान्य प्रश्न",
+s1:"क्या मैं किसी शास्त्रीय आयुर्वेदिक फ़ॉर्मूलेशन का पेटेंट करा सकता हूँ?",s1t:"पेटेंट",s2:"क्या अश्वगंधा वाला उत्पाद बेचने के लिए NBA की मंज़ूरी चाहिए?",s2t:"पहुँच और लाभ-साझाकरण",s3:"मैं अपने हर्बल सिरप के विज्ञापन में क्या दावा कर सकता हूँ?",s3t:"विज्ञापन",s4:"मेरा उत्पाद शास्त्रीय औषधि है या प्रोप्राइटरी?",s4t:"उत्पाद श्रेणी",
+fine:"नमूना उत्तरों वाला प्रोटोटाइप। केवल मार्गदर्शन, कानूनी सलाह नहीं। कम विश्वसनीयता वाले उत्तर विशेषज्ञ समीक्षा के लिए भेजे जाते हैं।",yourProduct:"आपका उत्पाद",prodEmpty:"अभी कोई श्रेणी नहीं। उत्पाद का वर्गीकरण करने से हर उत्तर उस पर लागू नियमों के अनुसार होता है।",sources:"स्रोत",noneYet:"अभी कोई नहीं",cited:"उद्धृत",srcEmpty:"प्रश्न पूछें, उत्तर के पीछे के सटीक अधिनियम, धाराएँ और आधिकारिक लिंक यहाँ दिखेंगे।",srcNone:"कोई सत्यापित स्रोत इस प्रश्न से पर्याप्त रूप से मेल नहीं खाया।",
+helpers:"अनुपालन सहायक",hAbs:"ABS सहायक",hAbsS:"आपको NBA या SBB का कौन सा चरण चाहिए",hPrior:"प्रायर आर्ट संकेतक",hPriorS:"TKDL, पेटेंट और शोध पत्रिकाएँ",hForms:"फ़ॉर्म और पोर्टल",hFormsS:"IP India, NBA, आयुष, FSSAI",
+steps:["आपके प्रश्न को चार तरह से दोबारा लिखा जा रहा है","भारतीय कानून और राजपत्र अधिसूचनाएँ खोजी जा रही हैं","WIPO, नागोया और पेटेंट कार्यालयों के दस्तावेज़ खोजे जा रहे हैं","सबसे प्रासंगिक धाराओं को क्रम दिया जा रहा है","हर दावे को उसके स्रोत से जाँचा जा रहा है"],
+conf:["उच्च विश्वसनीयता","हर दावा एक वर्तमान स्रोत पर आधारित है","मध्यम विश्वसनीयता","एक स्रोत की स्थिति बदल रही है","कम विश्वसनीयता","पर्याप्त सत्यापित स्रोत नहीं"],
+escLow:"इस उत्तर पर भरोसा करने से पहले मानवीय जाँच ज़रूरी है।",escChg:"इस उत्तर का एक हिस्सा ऐसे नियम पर निर्भर है जिसकी स्थिति बदल रही है।",escRev:"कोई सत्यापित विशेषज्ञ 48 से 72 घंटों में इसकी समीक्षा कर सकता है।",askFor:"₹599 में विशेषज्ञ से पूछें",ask:"विशेषज्ञ से पूछें",listen:"सुनें",copy:"कॉपी करें",
+note:"खोज के लिए Bhashini द्वारा अंग्रेज़ी में अनुवाद",pIn:"भारत",pIntl:"अंतरराष्ट्रीय",pCur:"वर्तमान",pOff:"आधिकारिक स्रोत",review:"स्थिति समीक्षाधीन",ratify:"अनुसमर्थन जाँचें",W:{s:"धारा",a:"अनुच्छेद",r:"नियम"},
+tIn:"भारतीय कानून के तहत उत्तर",tIntl:"अंतरराष्ट्रीय व्यवस्थाओं के तहत उत्तर (WIPO, नागोया, EPO, USPTO)",copied:"उत्तर कॉपी हुआ",copyNo:"इस ब्राउज़र में कॉपी अवरुद्ध है",reading:"पढ़कर सुनाया जा रहा है। प्रोडक्शन में Bhashini आवाज़ें उपयोग होंगी।",audioNo:"इस ब्राउज़र में ऑडियो उपलब्ध नहीं",listening:"Bhashini वाक् पहचान से सुन रहे हैं",saved:"सहेजा गया। अब उत्तर इस श्रेणी के अनुसार होंगे:",langSet:"इंटरफ़ेस और उत्तर अब हिन्दी में",
+clsH:"अपने उत्पाद का वर्गीकरण करें",clsSub:"श्रेणी तय करती है कि कौन सा नियामक, लाइसेंस और IP मार्ग लागू होगा।",resLead:"आपका उत्पाद संभवतः है",lReg:"नियामक",lLaw:"लागू कानून",lIp:"IP मार्ग",lAbs:"पहुँच और लाभ-साझाकरण",useThis:"मेरे उत्तरों के लिए इसे उपयोग करें",restart:"फिर से शुरू करें",classified:"वर्गीकृत",
+exH:"सत्यापित विशेषज्ञ से पूछें",exSub:"आपका प्रश्न, AI उत्तर और उसके स्रोत विशेषज्ञ के साथ साझा किए जाते हैं, ताकि आपको दोहराना न पड़े।",yourQ:"आपका प्रश्न",exA:"IP अधिवक्ता",exAS:"पेटेंट, ट्रेडमार्क, पारंपरिक ज्ञान सुरक्षा",exR:"नियामक सलाहकार",exRS:"आयुष लाइसेंसिंग, विज्ञापन, FSSAI",exB:"ABS विशेषज्ञ",exBS:"NBA और राज्य जैव विविधता बोर्ड फ़ाइलिंग",exTime:"48 से 72 घंटों में लिखित उत्तर",exReq:"₹599 में समीक्षा का अनुरोध करें",cancel:"रद्द करें",exFiling:"फ़ाइलिंग करवानी है? पंजीकृत पेटेंट एजेंटों के माध्यम से फ़ाइलिंग सहायता ₹3,000 से शुरू।",
+doneH:"समीक्षा का अनुरोध भेजा गया",doneSub:"सत्यापित विशेषज्ञ 48 से 72 घंटों में उत्तर देंगे। उत्तर यहाँ और SMS पर मिलेगा।",done:"ठीक है",
+proH:"स्टार्टअप और MSME के लिए Pro",proSub:"निःशुल्क की सभी सुविधाएँ, साथ ही नियमित रूप से फ़ाइल और बिक्री करने वाली टीमों के लिए टूल।",included:"शामिल",proList:"सहेजे गए उत्पाद डोज़ियर, कानून बदलाव अलर्ट, अनुपालन चेकलिस्ट, प्राथमिकता विशेषज्ञ समीक्षा और PDF रिपोर्ट",proPrice:"मासिक, या ₹4,999 प्रति वर्ष",startPro:"Pro शुरू करें",stayFree:"निःशुल्क पर रहें",
+priorH:"प्रायर आर्ट संकेतक",priorSub:"फ़ाइल करने से पहले जाँचें कि आपका फ़ॉर्मूलेशन पहले से दर्ज तो नहीं। पूर्ण TKDL पहुँच केवल पेटेंट कार्यालयों तक सीमित है, इसलिए इन खुले स्रोतों से शुरू करें।",pTk:"TKDL क्या कवर करता है और कार्यालय इसका उपयोग कैसे करते हैं",pLens:"निःशुल्क वैश्विक पेटेंट और शोध खोज",pGp:"सभी कार्यालयों में पूर्ण-पाठ पेटेंट खोज",pPub:"जड़ी-बूटियों और फ़ॉर्मूलेशन पर प्रकाशित शोध",
+formsH:"आधिकारिक फ़ॉर्म और पोर्टल",formsSub:"केवल आधिकारिक पोर्टल से फ़ाइल करें। लिंक सीधे सरकारी साइट खोलते हैं।",fIp:"पेटेंट, ट्रेडमार्क और डिज़ाइन ई-फ़ाइलिंग",fNbaT:"राष्ट्रीय जैव विविधता प्राधिकरण",fNba:"ABS मंज़ूरी और फ़ॉर्म",fAyT:"आयुष मंत्रालय",fAy:"औषधि नियम, अधिसूचनाएँ और परामर्श",fFs:"खाद्य लाइसेंसिंग और पंजीकरण",fWi:"PCT फ़ाइलिंग और अंतरराष्ट्रीय संधियाँ",open:"खोलें",
+mic:"क्या अश्वगंधा वाले उत्पाद के लिए मुझे NBA की अनुमति चाहिए?"},
+
+gu:{brandSub:"આયુર્વેદ IP અને નિયમનકારી માર્ગદર્શક",newQ:"નવો પ્રશ્ન",tools:"સાધનો",tClassify:"મારા ઉત્પાદનનું વર્ગીકરણ કરો",tAbs:"પ્રવેશ અને લાભ-વહેંચણી",tPrior:"પ્રાયર આર્ટ અને TKDL",tForms:"સત્તાવાર ફોર્મ અને પોર્ટલ",planTag:"મફત યોજના",planText:"વર્ગીકરણ અને સ્ત્રોત-સહિત જવાબો હંમેશા મફત છે. નિષ્ણાત સમીક્ષા પ્રશ્ન દીઠ ₹299થી શરૂ.",planBtn:"Pro જુઓ, ₹499 પ્રતિ મહિને",india:"ભારત",intl:"આંતરરાષ્ટ્રીય",corpus:"કાયદા સંગ્રહ 18 સપ્ટેમ્બર 2026ના રોજ અપડેટ",
+h1:"તમારા આયુર્વેદ ઉત્પાદનના IP અને નિયમો વિશે પૂછો.",lede:"દરેક જવાબ સત્તાવાર કાયદામાંથી આવે છે અને ચોક્કસ અધિનિયમ અને કલમ દર્શાવે છે. ઉપર ભારતીય અને આંતરરાષ્ટ્રીય નિયમો વચ્ચે બદલો.",ph:"કોઈપણ ભાષામાં પૂછો, જેમ કે: શું હું મારા હર્બલ તેલની પેટન્ટ લઈ શકું?",
+clsTitle:"તમારું ઉત્પાદન કઈ શ્રેણીમાં છે તે ખબર નથી?",clsText:"વધુમાં વધુ ચાર પ્રશ્નોના જવાબ આપો અને જાણો કયા નિયમો, લાઇસન્સ અને IP માર્ગ લાગુ પડે છે.",clsGo:"વર્ગીકરણ શરૂ કરો",common:"સામાન્ય પ્રશ્નો",
+s1:"શું હું શાસ્ત્રીય આયુર્વેદિક ફોર્મ્યુલેશનની પેટન્ટ લઈ શકું?",s1t:"પેટન્ટ",s2:"અશ્વગંધાવાળું ઉત્પાદન વેચવા NBA મંજૂરી જોઈએ?",s2t:"પ્રવેશ અને લાભ-વહેંચણી",s3:"મારા હર્બલ સિરપની જાહેરાતમાં હું શું દાવો કરી શકું?",s3t:"જાહેરાત",s4:"મારું ઉત્પાદન શાસ્ત્રીય દવા છે કે પ્રોપ્રાઇટરી?",s4t:"ઉત્પાદન શ્રેણી",
+fine:"નમૂના જવાબો સાથેનો પ્રોટોટાઇપ. ફક્ત માર્ગદર્શન, કાનૂની સલાહ નથી. ઓછી વિશ્વસનીયતાવાળા જવાબો નિષ્ણાત સમીક્ષા માટે મોકલાય છે.",yourProduct:"તમારું ઉત્પાદન",prodEmpty:"હજી કોઈ શ્રેણી નથી. ઉત્પાદનનું વર્ગીકરણ કરવાથી દરેક જવાબ લાગુ પડતા નિયમો મુજબ મળે છે.",sources:"સ્ત્રોતો",noneYet:"હજી નથી",cited:"ઉલ્લેખિત",srcEmpty:"પ્રશ્ન પૂછો, જવાબ પાછળના ચોક્કસ અધિનિયમો, કલમો અને સત્તાવાર લિંક અહીં દેખાશે.",srcNone:"કોઈ ચકાસાયેલ સ્ત્રોત આ પ્રશ્ન સાથે પૂરતો મેળ ખાતો નથી.",
+helpers:"અનુપાલન સહાયકો",hAbs:"ABS સહાયક",hAbsS:"તમારે NBA કે SBBનું કયું પગલું જોઈએ",hPrior:"પ્રાયર આર્ટ સૂચક",hPriorS:"TKDL, પેટન્ટ અને સંશોધન પત્રિકાઓ",hForms:"ફોર્મ અને પોર્ટલ",hFormsS:"IP India, NBA, આયુષ, FSSAI",
+steps:["તમારા પ્રશ્નને ચાર રીતે ફરીથી લખી રહ્યા છીએ","ભારતીય કાયદા અને રાજપત્ર અધિસૂચનાઓ શોધી રહ્યા છીએ","WIPO, નાગોયા અને પેટન્ટ કચેરીઓના દસ્તાવેજો શોધી રહ્યા છીએ","સૌથી સંબંધિત કલમોને ક્રમ આપી રહ્યા છીએ","દરેક દાવાને તેના સ્ત્રોત સાથે ચકાસી રહ્યા છીએ"],
+conf:["ઉચ્ચ વિશ્વસનીયતા","દરેક દાવો વર્તમાન સ્ત્રોત પર આધારિત છે","મધ્યમ વિશ્વસનીયતા","એક સ્ત્રોતની સ્થિતિ બદલાઈ રહી છે","ઓછી વિશ્વસનીયતા","પૂરતા ચકાસાયેલા સ્ત્રોત નથી"],
+escLow:"આ જવાબ પર આધાર રાખતા પહેલાં માનવ ચકાસણી જરૂરી છે.",escChg:"આ જવાબનો એક ભાગ એવા નિયમ પર આધાર રાખે છે જેની સ્થિતિ બદલાઈ રહી છે.",escRev:"ચકાસાયેલા નિષ્ણાત 48 થી 72 કલાકમાં તેની સમીક્ષા કરી શકે છે.",askFor:"₹599માં નિષ્ણાતને પૂછો",ask:"નિષ્ણાતને પૂછો",listen:"સાંભળો",copy:"કૉપિ કરો",
+note:"શોધ માટે Bhashini દ્વારા અંગ્રેજીમાં અનુવાદ",pIn:"ભારત",pIntl:"આંતરરાષ્ટ્રીય",pCur:"વર્તમાન",pOff:"સત્તાવાર સ્ત્રોત",review:"સ્થિતિ સમીક્ષા હેઠળ",ratify:"બહાલી તપાસો",W:{s:"કલમ",a:"અનુચ્છેદ",r:"નિયમ"},
+tIn:"ભારતીય કાયદા હેઠળ જવાબ",tIntl:"આંતરરાષ્ટ્રીય વ્યવસ્થાઓ હેઠળ જવાબ (WIPO, નાગોયા, EPO, USPTO)",copied:"જવાબ કૉપિ થયો",copyNo:"આ બ્રાઉઝરમાં કૉપિ અવરોધિત છે",reading:"મોટેથી વાંચી રહ્યા છીએ. પ્રોડક્શનમાં Bhashini અવાજો વપરાશે.",audioNo:"આ બ્રાઉઝરમાં ઑડિયો ઉપલબ્ધ નથી",listening:"Bhashini વાણી ઓળખથી સાંભળી રહ્યા છીએ",saved:"સાચવ્યું. હવે જવાબો આ શ્રેણી મુજબ મળશે:",langSet:"ઇન્ટરફેસ અને જવાબો હવે ગુજરાતીમાં",
+clsH:"તમારા ઉત્પાદનનું વર્ગીકરણ કરો",clsSub:"શ્રેણી નક્કી કરે છે કે કયું નિયમનકાર, લાઇસન્સ અને IP માર્ગ લાગુ પડશે.",resLead:"તમારું ઉત્પાદન સંભવતઃ છે",lReg:"નિયમનકાર",lLaw:"લાગુ કાયદો",lIp:"IP માર્ગ",lAbs:"પ્રવેશ અને લાભ-વહેંચણી",useThis:"મારા જવાબો માટે આ વાપરો",restart:"ફરી શરૂ કરો",classified:"વર્ગીકૃત",
+exH:"ચકાસાયેલ નિષ્ણાતને પૂછો",exSub:"તમારો પ્રશ્ન, AI જવાબ અને તેના સ્ત્રોતો નિષ્ણાત સાથે શેર થાય છે, જેથી તમારે ફરી કહેવું ન પડે.",yourQ:"તમારો પ્રશ્ન",exA:"IP વકીલ",exAS:"પેટન્ટ, ટ્રેડમાર્ક, પરંપરાગત જ્ઞાન સુરક્ષા",exR:"નિયમનકારી સલાહકાર",exRS:"આયુષ લાઇસન્સિંગ, જાહેરાત, FSSAI",exB:"ABS નિષ્ણાત",exBS:"NBA અને રાજ્ય જૈવ વિવિધતા બોર્ડ ફાઇલિંગ",exTime:"48 થી 72 કલાકમાં લેખિત જવાબ",exReq:"₹599માં સમીક્ષાની વિનંતી કરો",cancel:"રદ કરો",exFiling:"ફાઇલિંગ કરાવવું છે? નોંધાયેલા પેટન્ટ એજન્ટો દ્વારા ફાઇલિંગ સહાય ₹3,000થી શરૂ.",
+doneH:"સમીક્ષાની વિનંતી મોકલાઈ",doneSub:"ચકાસાયેલ નિષ્ણાત 48 થી 72 કલાકમાં જવાબ આપશે. જવાબ અહીં અને SMS પર મળશે.",done:"બરાબર",
+proH:"સ્ટાર્ટઅપ અને MSME માટે Pro",proSub:"મફતની બધી સુવિધાઓ, ઉપરાંત નિયમિત ફાઇલિંગ અને વેચાણ કરતી ટીમો માટે સાધનો.",included:"સમાવિષ્ટ",proList:"સાચવેલા ઉત્પાદન ડોઝિયર, કાયદા ફેરફાર અલર્ટ, અનુપાલન ચેકલિસ્ટ, અગ્રતા નિષ્ણાત સમીક્ષા અને PDF રિપોર્ટ",proPrice:"માસિક, અથવા ₹4,999 પ્રતિ વર્ષ",startPro:"Pro શરૂ કરો",stayFree:"મફત પર રહો",
+priorH:"પ્રાયર આર્ટ સૂચક",priorSub:"ફાઇલ કરતા પહેલાં તપાસો કે તમારું ફોર્મ્યુલેશન પહેલેથી નોંધાયેલું નથી ને. સંપૂર્ણ TKDL પ્રવેશ ફક્ત પેટન્ટ કચેરીઓ સુધી મર્યાદિત છે, તેથી આ ખુલ્લા સ્ત્રોતોથી શરૂ કરો.",pTk:"TKDL શું આવરી લે છે અને કચેરીઓ તેનો ઉપયોગ કેવી રીતે કરે છે",pLens:"મફત વૈશ્વિક પેટન્ટ અને સંશોધન શોધ",pGp:"બધી કચેરીઓમાં પૂર્ણ-લખાણ પેટન્ટ શોધ",pPub:"જડીબુટ્ટીઓ અને ફોર્મ્યુલેશન પર પ્રકાશિત સંશોધન",
+formsH:"સત્તાવાર ફોર્મ અને પોર્ટલ",formsSub:"ફક્ત સત્તાવાર પોર્ટલ દ્વારા ફાઇલ કરો. લિંક સીધી સરકારી સાઇટ ખોલે છે.",fIp:"પેટન્ટ, ટ્રેડમાર્ક અને ડિઝાઇન ઈ-ફાઇલિંગ",fNbaT:"રાષ્ટ્રીય જૈવ વિવિધતા સત્તામંડળ",fNba:"ABS મંજૂરીઓ અને ફોર્મ",fAyT:"આયુષ મંત્રાલય",fAy:"દવા નિયમો, અધિસૂચનાઓ અને સલાહ",fFs:"ખાદ્ય લાઇસન્સિંગ અને નોંધણી",fWi:"PCT ફાઇલિંગ અને આંતરરાષ્ટ્રીય સંધિઓ",open:"ખોલો",
+mic:"શું અશ્વગંધાવાળા ઉત્પાદન માટે મને NBA મંજૂરી જોઈએ?"},
+
+mr:{brandSub:"आयुर्वेद IP आणि नियामक मार्गदर्शक",newQ:"नवा प्रश्न",tools:"साधने",tClassify:"माझ्या उत्पादनाचे वर्गीकरण करा",tAbs:"प्रवेश आणि लाभ-वाटप",tPrior:"प्रायर आर्ट आणि TKDL",tForms:"अधिकृत अर्ज आणि पोर्टल",planTag:"मोफत योजना",planText:"वर्गीकरण आणि स्रोतासह उत्तरे नेहमी मोफत. तज्ज्ञ पुनरावलोकन प्रति प्रश्न ₹299 पासून.",planBtn:"Pro पाहा, ₹499 दरमहा",india:"भारत",intl:"आंतरराष्ट्रीय",corpus:"कायदा संग्रह 18 सप्टेंबर 2026 रोजी अद्ययावत",
+h1:"तुमच्या आयुर्वेद उत्पादनाच्या IP आणि नियमांबद्दल विचारा.",lede:"प्रत्येक उत्तर अधिकृत कायद्यावर आधारित असते आणि नेमका कायदा व कलम सांगते. वर भारतीय आणि आंतरराष्ट्रीय नियमांमध्ये बदला.",ph:"कोणत्याही भाषेत विचारा, उदा: माझ्या हर्बल तेलाचे पेटंट घेता येईल का?",
+clsTitle:"तुमचे उत्पादन कोणत्या श्रेणीत आहे हे माहीत नाही?",clsText:"जास्तीत जास्त चार प्रश्नांची उत्तरे द्या आणि कोणते नियम, परवाने आणि IP मार्ग लागू होतात ते जाणून घ्या.",clsGo:"वर्गीकरण सुरू करा",common:"सामान्य प्रश्न",
+s1:"शास्त्रीय आयुर्वेदिक फॉर्म्युलेशनचे पेटंट घेता येईल का?",s1t:"पेटंट",s2:"अश्वगंधा असलेले उत्पादन विकण्यासाठी NBA मंजुरी लागेल का?",s2t:"प्रवेश आणि लाभ-वाटप",s3:"माझ्या हर्बल सिरपच्या जाहिरातीत मी काय दावा करू शकतो?",s3t:"जाहिरात",s4:"माझे उत्पादन शास्त्रीय औषध आहे की प्रोप्रायटरी?",s4t:"उत्पादन श्रेणी",
+fine:"नमुना उत्तरांसह प्रोटोटाइप. फक्त मार्गदर्शन, कायदेशीर सल्ला नाही. कमी विश्वासार्हतेची उत्तरे तज्ज्ञ पुनरावलोकनासाठी पाठवली जातात.",yourProduct:"तुमचे उत्पादन",prodEmpty:"अद्याप श्रेणी नाही. उत्पादनाचे वर्गीकरण केल्याने प्रत्येक उत्तर लागू नियमांनुसार मिळते.",sources:"स्रोत",noneYet:"अद्याप नाही",cited:"संदर्भित",srcEmpty:"प्रश्न विचारा, उत्तरामागील नेमके कायदे, कलमे आणि अधिकृत दुवे येथे दिसतील.",srcNone:"कोणताही सत्यापित स्रोत या प्रश्नाशी पुरेसा जुळला नाही.",
+helpers:"अनुपालन सहाय्यक",hAbs:"ABS सहाय्यक",hAbsS:"तुम्हाला NBA किंवा SBB ची कोणती पायरी हवी",hPrior:"प्रायर आर्ट सूचक",hPriorS:"TKDL, पेटंट आणि संशोधन नियतकालिके",hForms:"अर्ज आणि पोर्टल",hFormsS:"IP India, NBA, आयुष, FSSAI",
+steps:["तुमचा प्रश्न चार प्रकारे पुन्हा लिहित आहोत","भारतीय कायदे आणि राजपत्र अधिसूचना शोधत आहोत","WIPO, नागोया आणि पेटंट कार्यालयांचे दस्तऐवज शोधत आहोत","सर्वात संबंधित कलमांना क्रम देत आहोत","प्रत्येक दावा त्याच्या स्रोताशी पडताळत आहोत"],
+conf:["उच्च विश्वासार्हता","प्रत्येक दावा सध्याच्या स्रोतावर आधारित आहे","मध्यम विश्वासार्हता","एका स्रोताची स्थिती बदलत आहे","कमी विश्वासार्हता","पुरेसे सत्यापित स्रोत नाहीत"],
+escLow:"या उत्तरावर अवलंबून राहण्यापूर्वी मानवी तपासणी आवश्यक आहे.",escChg:"या उत्तराचा एक भाग अशा नियमावर अवलंबून आहे ज्याची स्थिती बदलत आहे.",escRev:"सत्यापित तज्ज्ञ 48 ते 72 तासांत याचे पुनरावलोकन करू शकतात.",askFor:"₹599 मध्ये तज्ज्ञांना विचारा",ask:"तज्ज्ञांना विचारा",listen:"ऐका",copy:"कॉपी करा",
+note:"शोधासाठी Bhashini द्वारे इंग्रजीत भाषांतर",pIn:"भारत",pIntl:"आंतरराष्ट्रीय",pCur:"सध्याचे",pOff:"अधिकृत स्रोत",review:"स्थिती पुनरावलोकनाधीन",ratify:"मान्यता तपासा",W:{s:"कलम",a:"अनुच्छेद",r:"नियम"},
+tIn:"भारतीय कायद्यानुसार उत्तर",tIntl:"आंतरराष्ट्रीय व्यवस्थांनुसार उत्तर (WIPO, नागोया, EPO, USPTO)",copied:"उत्तर कॉपी झाले",copyNo:"या ब्राउझरमध्ये कॉपी अवरोधित आहे",reading:"मोठ्याने वाचत आहोत. प्रत्यक्ष वापरात Bhashini आवाज वापरले जातील.",audioNo:"या ब्राउझरमध्ये ऑडिओ उपलब्ध नाही",listening:"Bhashini वाणी ओळखीद्वारे ऐकत आहोत",saved:"जतन केले. आता उत्तरे या श्रेणीनुसार मिळतील:",langSet:"इंटरफेस आणि उत्तरे आता मराठीत",
+clsH:"तुमच्या उत्पादनाचे वर्गीकरण करा",clsSub:"श्रेणी ठरवते की कोणता नियामक, परवाना आणि IP मार्ग लागू होईल.",resLead:"तुमचे उत्पादन बहुधा आहे",lReg:"नियामक",lLaw:"लागू कायदा",lIp:"IP मार्ग",lAbs:"प्रवेश आणि लाभ-वाटप",useThis:"माझ्या उत्तरांसाठी हे वापरा",restart:"पुन्हा सुरू करा",classified:"वर्गीकृत",
+exH:"सत्यापित तज्ज्ञांना विचारा",exSub:"तुमचा प्रश्न, AI उत्तर आणि त्याचे स्रोत तज्ज्ञांसोबत शेअर केले जातात, त्यामुळे पुन्हा सांगावे लागत नाही.",yourQ:"तुमचा प्रश्न",exA:"IP वकील",exAS:"पेटंट, ट्रेडमार्क, पारंपरिक ज्ञान संरक्षण",exR:"नियामक सल्लागार",exRS:"आयुष परवाना, जाहिरात, FSSAI",exB:"ABS तज्ज्ञ",exBS:"NBA आणि राज्य जैवविविधता मंडळ अर्ज",exTime:"48 ते 72 तासांत लेखी उत्तर",exReq:"₹599 मध्ये पुनरावलोकनाची विनंती करा",cancel:"रद्द करा",exFiling:"अर्ज दाखल करायचा आहे? नोंदणीकृत पेटंट एजंटांमार्फत अर्ज सहाय्य ₹3,000 पासून.",
+doneH:"पुनरावलोकनाची विनंती पाठवली",doneSub:"सत्यापित तज्ज्ञ 48 ते 72 तासांत उत्तर देतील. उत्तर येथे आणि SMS वर मिळेल.",done:"ठीक आहे",
+proH:"स्टार्टअप आणि MSME साठी Pro",proSub:"मोफत योजनेतील सर्व काही, तसेच नियमित अर्ज आणि विक्री करणाऱ्या संघांसाठी साधने.",included:"समाविष्ट",proList:"जतन केलेले उत्पादन डोसियर, कायदा बदल सूचना, अनुपालन तपासणी सूची, प्राधान्य तज्ज्ञ पुनरावलोकन आणि PDF अहवाल",proPrice:"मासिक, किंवा ₹4,999 प्रति वर्ष",startPro:"Pro सुरू करा",stayFree:"मोफत योजनेवर राहा",
+priorH:"प्रायर आर्ट सूचक",priorSub:"अर्ज करण्यापूर्वी तुमचे फॉर्म्युलेशन आधीच नोंदलेले नाही ना हे तपासा. संपूर्ण TKDL प्रवेश फक्त पेटंट कार्यालयांपुरता मर्यादित आहे, म्हणून या खुल्या स्रोतांपासून सुरुवात करा.",pTk:"TKDL मध्ये काय आहे आणि कार्यालये त्याचा वापर कसा करतात",pLens:"मोफत जागतिक पेटंट आणि संशोधन शोध",pGp:"सर्व कार्यालयांमध्ये पूर्ण-मजकूर पेटंट शोध",pPub:"वनौषधी आणि फॉर्म्युलेशनवरील प्रकाशित संशोधन",
+formsH:"अधिकृत अर्ज आणि पोर्टल",formsSub:"फक्त अधिकृत पोर्टलद्वारे अर्ज करा. दुवे थेट सरकारी संकेतस्थळ उघडतात.",fIp:"पेटंट, ट्रेडमार्क आणि डिझाइन ई-फायलिंग",fNbaT:"राष्ट्रीय जैवविविधता प्राधिकरण",fNba:"ABS मंजुरी आणि अर्ज",fAyT:"आयुष मंत्रालय",fAy:"औषध नियम, अधिसूचना आणि मार्गदर्शक सूचना",fFs:"अन्न परवाना आणि नोंदणी",fWi:"PCT अर्ज आणि आंतरराष्ट्रीय करार",open:"उघडा",
+mic:"अश्वगंधा असलेल्या उत्पादनासाठी मला NBA मंजुरी लागेल का?"},
+
+ta:{brandSub:"ஆயுர்வேத IP மற்றும் ஒழுங்குமுறை வழிகாட்டி",newQ:"புதிய கேள்வி",tools:"கருவிகள்",tClassify:"என் பொருளை வகைப்படுத்து",tAbs:"அணுகல் மற்றும் நன்மைப் பகிர்வு",tPrior:"முன் கலை மற்றும் TKDL",tForms:"அதிகாரப்பூர்வ படிவங்கள் மற்றும் தளங்கள்",planTag:"இலவசத் திட்டம்",planText:"வகைப்படுத்தலும் ஆதாரத்துடன் கூடிய பதில்களும் எப்போதும் இலவசம். நிபுணர் மதிப்பாய்வு ஒரு கேள்விக்கு ₹299 முதல்.",planBtn:"Pro பார்க்க, மாதம் ₹499",india:"இந்தியா",intl:"சர்வதேசம்",corpus:"சட்டத் தொகுப்பு 18 செப்டம்பர் 2026 அன்று புதுப்பிக்கப்பட்டது",
+h1:"உங்கள் ஆயுர்வேதப் பொருளின் IP மற்றும் விதிகள் பற்றிக் கேளுங்கள்.",lede:"ஒவ்வொரு பதிலும் அதிகாரப்பூர்வ சட்டத்திலிருந்து, சரியான சட்டம் மற்றும் பிரிவுடன் வருகிறது. மேலே இந்திய மற்றும் சர்வதேச விதிகளுக்கு இடையே மாற்றலாம்.",ph:"எந்த மொழியிலும் கேளுங்கள், உதாரணமாக: என் மூலிகை எண்ணெய்க்குக் காப்புரிமை பெறலாமா?",
+clsTitle:"உங்கள் பொருள் எந்த வகை என்று தெரியவில்லையா?",clsText:"அதிகபட்சம் நான்கு கேள்விகளுக்குப் பதிலளித்து, எந்த விதிகள், உரிமங்கள் மற்றும் IP வழிகள் பொருந்தும் என்று அறியுங்கள்.",clsGo:"வகைப்படுத்தலைத் தொடங்கு",common:"பொதுவான கேள்விகள்",
+s1:"பாரம்பரிய ஆயுர்வேத சூத்திரத்திற்குக் காப்புரிமை பெற முடியுமா?",s1t:"காப்புரிமை",s2:"அஸ்வகந்தா உள்ள பொருளை விற்க NBA ஒப்புதல் தேவையா?",s2t:"அணுகல் மற்றும் நன்மைப் பகிர்வு",s3:"என் மூலிகை சிரப் விளம்பரத்தில் என்ன கூறலாம்?",s3t:"விளம்பரம்",s4:"என் பொருள் பாரம்பரிய மருந்தா அல்லது தனியுரிம மருந்தா?",s4t:"பொருள் வகை",
+fine:"மாதிரிப் பதில்களுடன் கூடிய முன்மாதிரி. வழிகாட்டுதல் மட்டுமே, சட்ட ஆலோசனை அல்ல. குறைந்த நம்பகத்தன்மை கொண்ட பதில்கள் நிபுணர் மதிப்பாய்வுக்கு அனுப்பப்படும்.",yourProduct:"உங்கள் பொருள்",prodEmpty:"இன்னும் வகை இல்லை. பொருளை வகைப்படுத்தினால் ஒவ்வொரு பதிலும் அதற்குப் பொருந்தும் விதிகளுக்கேற்ப அமையும்.",sources:"ஆதாரங்கள்",noneYet:"இன்னும் இல்லை",cited:"மேற்கோள்கள்",srcEmpty:"கேள்வி கேளுங்கள்; பதிலின் பின்னால் உள்ள சரியான சட்டங்கள், பிரிவுகள் மற்றும் அதிகாரப்பூர்வ இணைப்புகள் இங்கே தோன்றும்.",srcNone:"இந்தக் கேள்விக்குப் போதுமான அளவு பொருந்தும் சரிபார்க்கப்பட்ட ஆதாரம் இல்லை.",
+helpers:"இணக்க உதவியாளர்கள்",hAbs:"ABS உதவியாளர்",hAbsS:"உங்களுக்கு எந்த NBA அல்லது SBB படி தேவை",hPrior:"முன் கலை வழிகாட்டி",hPriorS:"TKDL, காப்புரிமைகள் மற்றும் ஆய்விதழ்கள்",hForms:"படிவங்கள் மற்றும் தளங்கள்",hFormsS:"IP India, NBA, ஆயுஷ், FSSAI",
+steps:["உங்கள் கேள்வியை நான்கு விதமாக மாற்றி எழுதுகிறது","இந்தியச் சட்டங்களையும் அரசிதழ் அறிவிப்புகளையும் தேடுகிறது","WIPO, நகோயா மற்றும் காப்புரிமை அலுவலக ஆவணங்களைத் தேடுகிறது","மிகவும் பொருத்தமான பிரிவுகளை வரிசைப்படுத்துகிறது","ஒவ்வொரு கூற்றையும் அதன் ஆதாரத்துடன் சரிபார்க்கிறது"],
+conf:["உயர் நம்பகத்தன்மை","ஒவ்வொரு கூற்றும் தற்போதைய ஆதாரத்தால் உறுதிசெய்யப்பட்டது","நடுத்தர நம்பகத்தன்மை","ஒரு ஆதாரத்தின் நிலை மாறிவருகிறது","குறைந்த நம்பகத்தன்மை","போதுமான சரிபார்க்கப்பட்ட ஆதாரங்கள் இல்லை"],
+escLow:"இந்தப் பதிலை நம்புவதற்கு முன் மனிதச் சரிபார்ப்பு தேவை.",escChg:"இந்தப் பதிலின் ஒரு பகுதி நிலை மாறிவரும் ஒரு விதியைச் சார்ந்துள்ளது.",escRev:"சரிபார்க்கப்பட்ட நிபுணர் 48 முதல் 72 மணி நேரத்தில் மதிப்பாய்வு செய்வார்.",askFor:"₹599க்கு நிபுணரிடம் கேள்",ask:"நிபுணரிடம் கேள்",listen:"ஒலியாகக் கேள்",copy:"நகலெடு",
+note:"தேடலுக்காக Bhashini மூலம் ஆங்கிலத்தில் மொழிபெயர்க்கப்பட்டது",pIn:"இந்தியா",pIntl:"சர்வதேசம்",pCur:"நடப்பில்",pOff:"அதிகாரப்பூர்வ ஆதாரம்",review:"நிலை மறுஆய்வில்",ratify:"அங்கீகார நிலையைச் சரிபார்க்கவும்",W:{s:"பிரிவு",a:"உறுப்பு",r:"விதி"},
+tIn:"இந்தியச் சட்டத்தின் கீழ் பதில்",tIntl:"சர்வதேச முறைமைகளின் கீழ் பதில் (WIPO, நகோயா, EPO, USPTO)",copied:"பதில் நகலெடுக்கப்பட்டது",copyNo:"இந்த உலாவியில் நகலெடுத்தல் தடுக்கப்பட்டுள்ளது",reading:"உரக்கப் படிக்கிறது. உண்மைப் பயன்பாட்டில் Bhashini குரல்கள் பயன்படும்.",audioNo:"இந்த உலாவியில் ஒலி கிடைக்கவில்லை",listening:"Bhashini பேச்சு அறிதல் மூலம் கேட்கிறது",saved:"சேமிக்கப்பட்டது. இனி பதில்கள் இந்த வகைக்கேற்ப அமையும்:",langSet:"இடைமுகமும் பதில்களும் இப்போது தமிழில்",
+clsH:"உங்கள் பொருளை வகைப்படுத்துங்கள்",clsSub:"எந்த ஒழுங்குமுறை அமைப்பு, உரிமம் மற்றும் IP வழி பொருந்தும் என்பதை வகையே தீர்மானிக்கிறது.",resLead:"உங்கள் பொருள் பெரும்பாலும்",lReg:"ஒழுங்குமுறை அமைப்பு",lLaw:"பொருந்தும் சட்டம்",lIp:"IP வழி",lAbs:"அணுகல் மற்றும் நன்மைப் பகிர்வு",useThis:"என் பதில்களுக்கு இதைப் பயன்படுத்து",restart:"மீண்டும் தொடங்கு",classified:"வகைப்படுத்தப்பட்டது",
+exH:"சரிபார்க்கப்பட்ட நிபுணரிடம் கேளுங்கள்",exSub:"உங்கள் கேள்வி, AI பதில் மற்றும் அதன் ஆதாரங்கள் நிபுணருடன் பகிரப்படும், எனவே மீண்டும் சொல்ல வேண்டியதில்லை.",yourQ:"உங்கள் கேள்வி",exA:"IP வழக்கறிஞர்",exAS:"காப்புரிமை, வர்த்தக முத்திரை, பாரம்பரிய அறிவுப் பாதுகாப்பு",exR:"ஒழுங்குமுறை ஆலோசகர்",exRS:"ஆயுஷ் உரிமம், விளம்பரம், FSSAI",exB:"ABS நிபுணர்",exBS:"NBA மற்றும் மாநில பல்லுயிர் வாரியத் தாக்கல்கள்",exTime:"48 முதல் 72 மணி நேரத்தில் எழுத்துப்பூர்வ பதில்",exReq:"₹599க்கு மதிப்பாய்வைக் கோருங்கள்",cancel:"ரத்து செய்",exFiling:"தாக்கல் செய்ய வேண்டுமா? பதிவுசெய்யப்பட்ட காப்புரிமை முகவர்கள் மூலம் தாக்கல் உதவி ₹3,000 முதல்.",
+doneH:"மதிப்பாய்வு கோரப்பட்டது",doneSub:"சரிபார்க்கப்பட்ட நிபுணர் 48 முதல் 72 மணி நேரத்தில் பதிலளிப்பார். பதில் இங்கும் SMS மூலமும் வரும்.",done:"சரி",
+proH:"ஸ்டார்ட்அப் மற்றும் MSME-களுக்கான Pro",proSub:"இலவசத் திட்டத்தில் உள்ள அனைத்தும், மேலும் அடிக்கடி தாக்கல் செய்து விற்பனை செய்யும் குழுக்களுக்கான கருவிகள்.",included:"உள்ளடக்கம்",proList:"சேமிக்கப்பட்ட பொருள் ஆவணங்கள், சட்ட மாற்ற எச்சரிக்கைகள், இணக்கச் சரிபார்ப்புப் பட்டியல்கள், முன்னுரிமை நிபுணர் மதிப்பாய்வு மற்றும் PDF அறிக்கைகள்",proPrice:"மாதாந்திரம், அல்லது ஆண்டுக்கு ₹4,999",startPro:"Pro தொடங்கு",stayFree:"இலவசத்தில் தொடர்",
+priorH:"முன் கலை வழிகாட்டி",priorSub:"தாக்கல் செய்வதற்கு முன் உங்கள் சூத்திரம் ஏற்கனவே பதிவாகியுள்ளதா எனச் சரிபார்க்கவும். முழு TKDL அணுகல் காப்புரிமை அலுவலகங்களுக்கு மட்டுமே, எனவே இந்தத் திறந்த ஆதாரங்களில் தொடங்குங்கள்.",pTk:"TKDL எதை உள்ளடக்குகிறது, அலுவலகங்கள் அதை எப்படிப் பயன்படுத்துகின்றன",pLens:"இலவச உலகளாவிய காப்புரிமை மற்றும் ஆய்வுத் தேடல்",pGp:"அனைத்து அலுவலகங்களிலும் முழு உரைக் காப்புரிமைத் தேடல்",pPub:"மூலிகைகள் மற்றும் சூத்திரங்கள் பற்றிய வெளியிடப்பட்ட ஆய்வுகள்",
+formsH:"அதிகாரப்பூர்வ படிவங்கள் மற்றும் தளங்கள்",formsSub:"அதிகாரப்பூர்வ தளங்கள் மூலம் மட்டுமே தாக்கல் செய்யுங்கள். இணைப்புகள் நேரடியாக அரசு தளத்தைத் திறக்கும்.",fIp:"காப்புரிமை, வர்த்தக முத்திரை மற்றும் வடிவமைப்பு மின்-தாக்கல்",fNbaT:"தேசிய பல்லுயிர் ஆணையம்",fNba:"ABS ஒப்புதல்கள் மற்றும் படிவங்கள்",fAyT:"ஆயுஷ் அமைச்சகம்",fAy:"மருந்து விதிகள், அறிவிப்புகள் மற்றும் ஆலோசனைகள்",fFs:"உணவு உரிமம் மற்றும் பதிவு",fWi:"PCT தாக்கல் மற்றும் சர்வதேச ஒப்பந்தங்கள்",open:"திற",
+mic:"அஸ்வகந்தா உள்ள பொருளுக்கு எனக்கு NBA ஒப்புதல் தேவையா?"}
+};
+
+/* Live-mode text overrides */
+const LIVE={
+ en:{fine:"Answers come only from the official documents loaded into this system. Guidance, not legal advice.",err:"Could not reach the IP-SAKTI server. Make sure it is running (uvicorn api:app --port 8000) and try again.",sup:"Superseded",file:"File",ticket:"Ticket number"},
+ hi:{fine:"उत्तर केवल इस सिस्टम में लोड किए गए आधिकारिक दस्तावेज़ों से आते हैं। मार्गदर्शन, कानूनी सलाह नहीं।",err:"IP-SAKTI सर्वर से संपर्क नहीं हो सका। जाँचें कि सर्वर चल रहा है और फिर प्रयास करें।",sup:"पुराना संस्करण",file:"फ़ाइल",ticket:"टिकट नंबर"},
+ gu:{fine:"જવાબો ફક્ત આ સિસ્ટમમાં લોડ કરેલા સત્તાવાર દસ્તાવેજોમાંથી આવે છે. માર્ગદર્શન, કાનૂની સલાહ નહીં.",err:"IP-SAKTI સર્વર સુધી પહોંચી શકાયું નથી. સર્વર ચાલુ છે તે તપાસો અને ફરી પ્રયાસ કરો.",sup:"જૂનું સંસ્કરણ",file:"ફાઇલ",ticket:"ટિકિટ નંબર"},
+ mr:{fine:"उत्तरे फक्त या प्रणालीत लोड केलेल्या अधिकृत दस्तऐवजांमधून येतात. मार्गदर्शन, कायदेशीर सल्ला नाही.",err:"IP-SAKTI सर्व्हरशी संपर्क झाला नाही. सर्व्हर सुरू आहे का ते तपासा आणि पुन्हा प्रयत्न करा.",sup:"जुनी आवृत्ती",file:"फाइल",ticket:"तिकीट क्रमांक"},
+ ta:{fine:"இந்த அமைப்பில் ஏற்றப்பட்ட அதிகாரப்பூர்வ ஆவணங்களிலிருந்து மட்டுமே பதில்கள் வருகின்றன. வழிகாட்டுதல், சட்ட ஆலோசனை அல்ல.",err:"IP-SAKTI சேவையகத்தை அணுக முடியவில்லை. சேவையகம் இயங்குகிறதா எனச் சரிபார்த்து மீண்டும் முயற்சிக்கவும்.",sup:"பழைய பதிப்பு",file:"கோப்பு",ticket:"டிக்கெட் எண்"}
+};
+for(const l in LIVE){Object.assign(T[l],LIVE[l]);}
+
+const PRO={
+en:{library:"Document library",libSub:"Official documents the assistant can cite. Add files to data/raw and run ingest to extend it.",expertDesk:"Expert desk",deskSub:"Questions escalated for human review.",howFound:"How this answer was found",qUsed:"Search queries",cragL:"Source check",attempts:"attempts",took:"Time taken",removed:"Unsupported claims removed",langL:"Language",helpful:"Helpful",notHelpful:"Not helpful",thanks:"Thanks for the feedback",openPdf:"Open document at this page",excerptL:"Passage used",online:"Online",offline:"Server offline",docsN:"documents",chunksN:"sections",noTickets:"No escalated questions yet.",statusOpen:"Open",statusResolved:"Resolved",reply:"Expert reply",replyPh:"Write the expert's answer",sendReply:"Mark resolved",oldVer:"Older version",cragMap:{correct:"Strong match",ambiguous:"Partial match",incorrect:"No match"}},
+hi:{library:"दस्तावेज़ पुस्तकालय",libSub:"आधिकारिक दस्तावेज़ जिनका सहायक हवाला दे सकता है। और जोड़ने के लिए data/raw में फ़ाइलें रखें और ingest चलाएँ।",expertDesk:"विशेषज्ञ डेस्क",deskSub:"मानवीय समीक्षा के लिए भेजे गए प्रश्न।",howFound:"यह उत्तर कैसे मिला",qUsed:"खोज प्रश्न",cragL:"स्रोत जाँच",attempts:"प्रयास",took:"लगा समय",removed:"हटाए गए असमर्थित दावे",langL:"भाषा",helpful:"उपयोगी",notHelpful:"उपयोगी नहीं",thanks:"प्रतिक्रिया के लिए धन्यवाद",openPdf:"इस पृष्ठ पर दस्तावेज़ खोलें",excerptL:"प्रयुक्त अंश",online:"ऑनलाइन",offline:"सर्वर ऑफ़लाइन",docsN:"दस्तावेज़",chunksN:"खंड",noTickets:"अभी कोई प्रश्न विशेषज्ञ को नहीं भेजा गया।",statusOpen:"खुला",statusResolved:"हल",reply:"विशेषज्ञ का उत्तर",replyPh:"विशेषज्ञ का उत्तर लिखें",sendReply:"हल के रूप में चिह्नित करें",oldVer:"पुराना संस्करण",cragMap:{correct:"मज़बूत मिलान",ambiguous:"आंशिक मिलान",incorrect:"कोई मिलान नहीं"}},
+gu:{library:"દસ્તાવેજ પુસ્તકાલય",libSub:"સત્તાવાર દસ્તાવેજો જેનો સહાયક ઉલ્લેખ કરી શકે છે. વધુ ઉમેરવા data/rawમાં ફાઇલો મૂકો અને ingest ચલાવો.",expertDesk:"નિષ્ણાત ડેસ્ક",deskSub:"માનવ સમીક્ષા માટે મોકલાયેલા પ્રશ્નો.",howFound:"આ જવાબ કેવી રીતે મળ્યો",qUsed:"શોધ પ્રશ્નો",cragL:"સ્ત્રોત ચકાસણી",attempts:"પ્રયાસ",took:"લાગેલો સમય",removed:"દૂર કરેલા અસમર્થિત દાવા",langL:"ભાષા",helpful:"ઉપયોગી",notHelpful:"ઉપયોગી નથી",thanks:"પ્રતિસાદ બદલ આભાર",openPdf:"આ પાના પર દસ્તાવેજ ખોલો",excerptL:"વપરાયેલો અંશ",online:"ઓનલાઇન",offline:"સર્વર ઑફલાઇન",docsN:"દસ્તાવેજો",chunksN:"વિભાગો",noTickets:"હજી કોઈ પ્રશ્ન નિષ્ણાતને મોકલાયો નથી.",statusOpen:"ખુલ્લો",statusResolved:"ઉકેલાયેલ",reply:"નિષ્ણાતનો જવાબ",replyPh:"નિષ્ણાતનો જવાબ લખો",sendReply:"ઉકેલાયેલ તરીકે ચિહ્નિત કરો",oldVer:"જૂનું સંસ્કરણ",cragMap:{correct:"મજબૂત મેળ",ambiguous:"આંશિક મેળ",incorrect:"કોઈ મેળ નથી"}},
+mr:{library:"दस्तऐवज ग्रंथालय",libSub:"सहाय्यक संदर्भ देऊ शकतो असे अधिकृत दस्तऐवज. अधिक जोडण्यासाठी data/raw मध्ये फाइल्स ठेवा आणि ingest चालवा.",expertDesk:"तज्ज्ञ डेस्क",deskSub:"मानवी पुनरावलोकनासाठी पाठवलेले प्रश्न.",howFound:"हे उत्तर कसे मिळाले",qUsed:"शोध प्रश्न",cragL:"स्रोत पडताळणी",attempts:"प्रयत्न",took:"लागलेला वेळ",removed:"काढलेले असमर्थित दावे",langL:"भाषा",helpful:"उपयुक्त",notHelpful:"उपयुक्त नाही",thanks:"अभिप्रायाबद्दल धन्यवाद",openPdf:"या पानावर दस्तऐवज उघडा",excerptL:"वापरलेला उतारा",online:"ऑनलाइन",offline:"सर्व्हर ऑफलाइन",docsN:"दस्तऐवज",chunksN:"विभाग",noTickets:"अद्याप कोणताही प्रश्न तज्ज्ञांकडे पाठवलेला नाही.",statusOpen:"खुला",statusResolved:"सोडवलेला",reply:"तज्ज्ञांचे उत्तर",replyPh:"तज्ज्ञांचे उत्तर लिहा",sendReply:"सोडवलेले म्हणून चिन्हांकित करा",oldVer:"जुनी आवृत्ती",cragMap:{correct:"ठोस जुळणी",ambiguous:"आंशिक जुळणी",incorrect:"जुळणी नाही"}},
+ta:{library:"ஆவண நூலகம்",libSub:"உதவியாளர் மேற்கோள் காட்டக்கூடிய அதிகாரப்பூர்வ ஆவணங்கள். மேலும் சேர்க்க data/raw இல் கோப்புகளை வைத்து ingest இயக்கவும்.",expertDesk:"நிபுணர் மேசை",deskSub:"மனித மதிப்பாய்வுக்கு அனுப்பப்பட்ட கேள்விகள்.",howFound:"இந்தப் பதில் எப்படிக் கண்டறியப்பட்டது",qUsed:"தேடல் வினவல்கள்",cragL:"ஆதாரச் சரிபார்ப்பு",attempts:"முயற்சிகள்",took:"எடுத்த நேரம்",removed:"நீக்கப்பட்ட ஆதாரமற்ற கூற்றுகள்",langL:"மொழி",helpful:"பயனுள்ளது",notHelpful:"பயனில்லை",thanks:"கருத்துக்கு நன்றி",openPdf:"இந்தப் பக்கத்தில் ஆவணத்தைத் திற",excerptL:"பயன்படுத்தப்பட்ட பகுதி",online:"இணைப்பில்",offline:"சேவையகம் இணைப்பில் இல்லை",docsN:"ஆவணங்கள்",chunksN:"பிரிவுகள்",noTickets:"இன்னும் எந்தக் கேள்வியும் நிபுணருக்கு அனுப்பப்படவில்லை.",statusOpen:"திறந்தது",statusResolved:"தீர்க்கப்பட்டது",reply:"நிபுணரின் பதில்",replyPh:"நிபுணரின் பதிலை எழுதுங்கள்",sendReply:"தீர்க்கப்பட்டதாகக் குறி",oldVer:"பழைய பதிப்பு",cragMap:{correct:"வலுவான பொருத்தம்",ambiguous:"பகுதிப் பொருத்தம்",incorrect:"பொருத்தம் இல்லை"}}
+};
+for(const l in PRO){Object.assign(T[l],PRO[l]);}
+
+const USED={en:{docsUsed:"Documents used",pdfs:"files"},hi:{docsUsed:"प्रयुक्त दस्तावेज़",pdfs:"फ़ाइलें"},gu:{docsUsed:"વપરાયેલા દસ્તાવેજો",pdfs:"ફાઇલો"},mr:{docsUsed:"वापरलेले दस्तऐवज",pdfs:"फाइल्स"},ta:{docsUsed:"பயன்படுத்தப்பட்ட ஆவணங்கள்",pdfs:"கோப்புகள்"}};
+for(const l in USED){Object.assign(T[l],USED[l]);}
+
+/* Classifier */
+const Q={
+ use:{n:1,t:{en:"What is the product mainly for?",hi:"यह उत्पाद मुख्य रूप से किसके लिए है?",gu:"આ ઉત્પાદન મુખ્યત્વે શેના માટે છે?",mr:"हे उत्पादन मुख्यतः कशासाठी आहे?",ta:"இந்தப் பொருள் முக்கியமாக எதற்காக?"},o:[
+  ["med",{en:["Treating or preventing a health condition","Medicines and remedies"],hi:["किसी रोग का इलाज या रोकथाम","दवाएँ और उपचार"],gu:["કોઈ રોગની સારવાર અથવા અટકાવ","દવાઓ અને ઉપચાર"],mr:["आजारावर उपचार किंवा प्रतिबंध","औषधे आणि उपाय"],ta:["நோயைக் குணப்படுத்த அல்லது தடுக்க","மருந்துகள் மற்றும் சிகிச்சைகள்"]}],
+  ["aahar",{en:["Everyday food or diet","Health foods, drinks, supplements"],hi:["रोज़ का भोजन या आहार","स्वास्थ्य खाद्य, पेय, सप्लीमेंट"],gu:["રોજિંદો ખોરાક કે આહાર","આરોગ્ય ખોરાક, પીણાં, સપ્લિમેન્ટ"],mr:["रोजचे अन्न किंवा आहार","आरोग्य अन्न, पेये, पूरक"],ta:["அன்றாட உணவு அல்லது உணவுமுறை","சுகாதார உணவுகள், பானங்கள், சப்ளிமென்ட்கள்"]}],
+  ["cosmetic",{en:["Skin, hair or personal care","Oils, creams, soaps, shampoos"],hi:["त्वचा, बाल या व्यक्तिगत देखभाल","तेल, क्रीम, साबुन, शैम्पू"],gu:["ત્વચા, વાળ અથવા વ્યક્તિગત સંભાળ","તેલ, ક્રીમ, સાબુ, શેમ્પૂ"],mr:["त्वचा, केस किंवा वैयक्तिक निगा","तेल, क्रीम, साबण, शॅम्पू"],ta:["தோல், முடி அல்லது தனிப்பட்ட பராமரிப்பு","எண்ணெய், கிரீம், சோப்பு, ஷாம்பு"]}]]},
+ med:{n:2,t:{en:"Is the formula exactly as written in a classical Ayurvedic text?",hi:"क्या फ़ॉर्मूला किसी शास्त्रीय आयुर्वेदिक ग्रंथ में लिखे अनुसार ही है?",gu:"શું ફોર્મ્યુલા શાસ્ત્રીય આયુર્વેદિક ગ્રંથમાં લખ્યા મુજબ જ છે?",mr:"फॉर्म्युला शास्त्रीय आयुर्वेदिक ग्रंथात लिहिल्याप्रमाणेच आहे का?",ta:"சூத்திரம் பாரம்பரிய ஆயுர்வேத நூலில் உள்ளபடியே உள்ளதா?"},o:[
+  ["classical",{en:["Yes, it follows the text exactly","For example Chyawanprash or Triphala churna"],hi:["हाँ, बिल्कुल ग्रंथ के अनुसार","जैसे च्यवनप्राश या त्रिफला चूर्ण"],gu:["હા, ગ્રંથ મુજબ જ","જેમ કે ચ્યવનપ્રાશ અથવા ત્રિફળા ચૂર્ણ"],mr:["होय, ग्रंथानुसारच","उदा. च्यवनप्राश किंवा त्रिफळा चूर्ण"],ta:["ஆம், நூலில் உள்ளபடியே","உதாரணமாக சியவனப்ராஷ் அல்லது திரிபலா சூரணம்"]}],
+  ["phy",{en:["No, it is our own formula","Modified or newly designed"],hi:["नहीं, यह हमारा अपना फ़ॉर्मूला है","संशोधित या नया बनाया गया"],gu:["ના, આ અમારી પોતાની ફોર્મ્યુલા છે","સુધારેલી અથવા નવી બનાવેલી"],mr:["नाही, हा आमचा स्वतःचा फॉर्म्युला आहे","बदललेला किंवा नव्याने तयार केलेला"],ta:["இல்லை, இது எங்கள் சொந்த சூத்திரம்","மாற்றியமைக்கப்பட்டது அல்லது புதிதாக வடிவமைக்கப்பட்டது"]}]]},
+ phy:{n:3,t:{en:"Does it contain a purified, standardised fraction of a plant extract?",hi:"क्या इसमें पौधे के अर्क का शुद्ध, मानकीकृत अंश है?",gu:"શું તેમાં છોડના અર્કનો શુદ્ધ, પ્રમાણિત અંશ છે?",mr:"यात वनस्पती अर्काचा शुद्ध, प्रमाणित अंश आहे का?",ta:"இதில் தாவரச் சாற்றின் சுத்திகரிக்கப்பட்ட, தரப்படுத்தப்பட்ட பகுதி உள்ளதா?"},o:[
+  ["phyto",{en:["Yes","A defined, measured active fraction"],hi:["हाँ","एक परिभाषित, मापा हुआ सक्रिय अंश"],gu:["હા","નિર્ધારિત, માપેલો સક્રિય અંશ"],mr:["होय","निश्चित, मोजलेला सक्रिय अंश"],ta:["ஆம்","வரையறுக்கப்பட்ட, அளவிடப்பட்ட செயல்பாட்டுப் பகுதி"]}],
+  ["nd",{en:["No","Whole herbs or crude extracts"],hi:["नहीं","पूरी जड़ी-बूटियाँ या कच्चे अर्क"],gu:["ના","આખી જડીબુટ્ટીઓ કે કાચા અર્ક"],mr:["नाही","संपूर्ण वनस्पती किंवा कच्चे अर्क"],ta:["இல்லை","முழு மூலிகைகள் அல்லது கச்சா சாறுகள்"]}]]},
+ nd:{n:4,t:{en:"Does it include a new active substance or a modern drug ingredient?",hi:"क्या इसमें कोई नया सक्रिय पदार्थ या आधुनिक दवा का घटक है?",gu:"શું તેમાં કોઈ નવો સક્રિય પદાર્થ કે આધુનિક દવાનો ઘટક છે?",mr:"यात नवा सक्रिय पदार्थ किंवा आधुनिक औषधाचा घटक आहे का?",ta:"இதில் புதிய செயல்பாட்டுப் பொருள் அல்லது நவீன மருந்துக் கூறு உள்ளதா?"},o:[
+  ["newdrug",{en:["Yes","A new molecule or allopathic ingredient"],hi:["हाँ","नया अणु या एलोपैथिक घटक"],gu:["હા","નવો અણુ કે એલોપેથિક ઘટક"],mr:["होय","नवा रेणू किंवा ॲलोपॅथिक घटक"],ta:["ஆம்","புதிய மூலக்கூறு அல்லது அலோபதி கூறு"]}],
+  ["proprietary",{en:["No","Only Ayurvedic ingredients"],hi:["नहीं","केवल आयुर्वेदिक घटक"],gu:["ના","ફક્ત આયુર્વેદિક ઘટકો"],mr:["नाही","फक्त आयुर्वेदिक घटक"],ta:["இல்லை","ஆயுர்வேதக் கூறுகள் மட்டும்"]}]]}
+};
+const RG={ayush:{en:"State Licensing Authority for Ayush drugs",hi:"आयुष औषधियों के लिए राज्य लाइसेंसिंग प्राधिकरण",gu:"આયુષ દવાઓ માટે રાજ્ય લાઇસન્સિંગ સત્તામંડળ",mr:"आयुष औषधांसाठी राज्य परवाना प्राधिकरण",ta:"ஆயுஷ் மருந்துகளுக்கான மாநில உரிம ஆணையம்"},
+ cdsco:{en:"CDSCO, under the Drugs Controller General of India",hi:"CDSCO, भारत के औषधि महानियंत्रक के अधीन",gu:"CDSCO, ભારતના ડ્રગ્સ કંટ્રોલર જનરલ હેઠળ",mr:"CDSCO, भारताच्या औषध महानियंत्रकांच्या अखत्यारीत",ta:"CDSCO, இந்திய மருந்துக் கட்டுப்பாட்டுத் தலைமை இயக்குநரின் கீழ்"}};
+const R={
+ classical:{reg:"ayush",en:{c:"Classical Ayurvedic drug",law:"Drugs and Cosmetics Act, 1940, Section 3(a), with formulations from the texts in the First Schedule",ip:"The formula itself is generally not patentable. Protect the brand with a trademark.",abs:"Commercial use of Indian plants needs SBB intimation, or NBA approval for foreign-controlled firms."},
+  hi:{c:"शास्त्रीय आयुर्वेदिक औषधि",law:"Drugs and Cosmetics Act, 1940, धारा 3(a), प्रथम अनुसूची के ग्रंथों के फ़ॉर्मूलेशन",ip:"फ़ॉर्मूला स्वयं आम तौर पर पेटेंट योग्य नहीं। ब्रांड को ट्रेडमार्क से सुरक्षित करें।",abs:"भारतीय पौधों के व्यावसायिक उपयोग के लिए SBB को सूचना, या विदेशी-नियंत्रित फ़र्मों के लिए NBA मंज़ूरी।"},
+  gu:{c:"શાસ્ત્રીય આયુર્વેદિક દવા",law:"Drugs and Cosmetics Act, 1940, કલમ 3(a), પ્રથમ અનુસૂચિના ગ્રંથોના ફોર્મ્યુલેશન",ip:"ફોર્મ્યુલા પોતે સામાન્ય રીતે પેટન્ટપાત્ર નથી. બ્રાન્ડને ટ્રેડમાર્કથી સુરક્ષિત કરો.",abs:"ભારતીય છોડના વ્યાપારી ઉપયોગ માટે SBBને જાણ, અથવા વિદેશી-નિયંત્રિત કંપનીઓ માટે NBA મંજૂરી."},
+  mr:{c:"शास्त्रीय आयुर्वेदिक औषध",law:"Drugs and Cosmetics Act, 1940, कलम 3(a), पहिल्या अनुसूचीतील ग्रंथांमधील फॉर्म्युलेशन",ip:"फॉर्म्युला स्वतः सामान्यतः पेटंटयोग्य नाही. ब्रँडला ट्रेडमार्कने संरक्षण द्या.",abs:"भारतीय वनस्पतींच्या व्यावसायिक वापरासाठी SBB ला पूर्वसूचना, किंवा परदेशी-नियंत्रित कंपन्यांसाठी NBA मंजुरी."},
+  ta:{c:"பாரம்பரிய ஆயுர்வேத மருந்து",law:"Drugs and Cosmetics Act, 1940, பிரிவு 3(a), முதல் அட்டவணை நூல்களின் சூத்திரங்கள்",ip:"சூத்திரத்திற்கே பொதுவாகக் காப்புரிமை கிடைக்காது. பிராண்டை வர்த்தக முத்திரை மூலம் பாதுகாக்கவும்.",abs:"இந்தியத் தாவரங்களின் வணிகப் பயன்பாட்டிற்கு SBB-க்கு முன் அறிவிப்பு, அல்லது வெளிநாட்டுக் கட்டுப்பாட்டு நிறுவனங்களுக்கு NBA ஒப்புதல்."}},
+ proprietary:{reg:"ayush",en:{c:"Proprietary Ayurvedic medicine",law:"Drugs and Cosmetics Act, 1940, Section 3(h)(i), with safety and effectiveness data",ip:"A patent is possible for a new process or a combination with proven synergy.",abs:"SBB intimation or NBA approval before commercial use, and NBA approval before any IP grant."},
+  hi:{c:"प्रोप्राइटरी आयुर्वेदिक औषधि",law:"Drugs and Cosmetics Act, 1940, धारा 3(h)(i), सुरक्षा और प्रभावशीलता के आँकड़ों के साथ",ip:"नई प्रक्रिया या सिद्ध सहक्रियता वाले संयोजन पर पेटेंट संभव है।",abs:"व्यावसायिक उपयोग से पहले SBB को सूचना या NBA मंज़ूरी, और किसी भी IP अनुदान से पहले NBA मंज़ूरी।"},
+  gu:{c:"પ્રોપ્રાઇટરી આયુર્વેદિક દવા",law:"Drugs and Cosmetics Act, 1940, કલમ 3(h)(i), સલામતી અને અસરકારકતાના ડેટા સાથે",ip:"નવી પ્રક્રિયા અથવા સાબિત સિનર્જીવાળા સંયોજન પર પેટન્ટ શક્ય છે.",abs:"વ્યાપારી ઉપયોગ પહેલાં SBBને જાણ અથવા NBA મંજૂરી, અને કોઈપણ IP મળે તે પહેલાં NBA મંજૂરી."},
+  mr:{c:"प्रोप्रायटरी आयुर्वेदिक औषध",law:"Drugs and Cosmetics Act, 1940, कलम 3(h)(i), सुरक्षितता आणि परिणामकारकता माहितीसह",ip:"नवी प्रक्रिया किंवा सिद्ध सहक्रियता असलेल्या संयोजनावर पेटंट शक्य आहे.",abs:"व्यावसायिक वापरापूर्वी SBB ला पूर्वसूचना किंवा NBA मंजुरी, आणि कोणताही IP हक्क मिळण्यापूर्वी NBA मंजुरी."},
+  ta:{c:"தனியுரிம ஆயுர்வேத மருந்து",law:"Drugs and Cosmetics Act, 1940, பிரிவு 3(h)(i), பாதுகாப்பு மற்றும் செயல்திறன் தரவுகளுடன்",ip:"புதிய செயல்முறை அல்லது நிரூபிக்கப்பட்ட ஒருங்கிணைந்த விளைவுடைய கலவைக்குக் காப்புரிமை சாத்தியம்.",abs:"வணிகப் பயன்பாட்டிற்கு முன் SBB அறிவிப்பு அல்லது NBA ஒப்புதல், மேலும் IP வழங்கப்படும் முன் NBA ஒப்புதல்."}},
+ phyto:{reg:"cdsco",en:{c:"Phytopharmaceutical drug",law:"New Drugs and Clinical Trials Rules, 2019",ip:"A novel, standardised fraction can be patentable. Disclose the biological source in the application.",abs:"NBA approval needed before the patent is granted if Indian material is used."},
+  hi:{c:"फाइटोफार्मास्युटिकल औषधि",law:"New Drugs and Clinical Trials Rules, 2019",ip:"नया, मानकीकृत अंश पेटेंट योग्य हो सकता है। आवेदन में जैविक स्रोत का खुलासा करें।",abs:"भारतीय सामग्री के उपयोग पर पेटेंट मिलने से पहले NBA मंज़ूरी आवश्यक।"},
+  gu:{c:"ફાઇટોફાર્માસ્યુટિકલ દવા",law:"New Drugs and Clinical Trials Rules, 2019",ip:"નવો, પ્રમાણિત અંશ પેટન્ટપાત્ર હોઈ શકે. અરજીમાં જૈવિક સ્ત્રોત જાહેર કરો.",abs:"ભારતીય સામગ્રી વપરાય તો પેટન્ટ મળે તે પહેલાં NBA મંજૂરી જરૂરી."},
+  mr:{c:"फायटोफार्मास्युटिकल औषध",law:"New Drugs and Clinical Trials Rules, 2019",ip:"नवा, प्रमाणित अंश पेटंटयोग्य असू शकतो. अर्जात जैविक स्रोत जाहीर करा.",abs:"भारतीय सामग्री वापरल्यास पेटंट मिळण्यापूर्वी NBA मंजुरी आवश्यक."},
+  ta:{c:"பைட்டோஃபார்மாசூட்டிகல் மருந்து",law:"New Drugs and Clinical Trials Rules, 2019",ip:"புதிய, தரப்படுத்தப்பட்ட பகுதிக்குக் காப்புரிமை கிடைக்கலாம். விண்ணப்பத்தில் உயிரியல் மூலத்தை வெளிப்படுத்தவும்.",abs:"இந்தியப் பொருள் பயன்படுத்தப்பட்டால், காப்புரிமை வழங்கப்படும் முன் NBA ஒப்புதல் தேவை."}},
+ newdrug:{reg:"cdsco",en:{c:"New drug",law:"New Drugs and Clinical Trials Rules, 2019, with clinical trial data",ip:"Full patent route. Plan the filing before any public disclosure.",abs:"NBA approval before the IP grant, plus benefit sharing where Indian resources are used."},
+  hi:{c:"नई औषधि",law:"New Drugs and Clinical Trials Rules, 2019, क्लिनिकल परीक्षण आँकड़ों के साथ",ip:"पूर्ण पेटेंट मार्ग। किसी भी सार्वजनिक खुलासे से पहले फ़ाइलिंग की योजना बनाएँ।",abs:"IP अनुदान से पहले NBA मंज़ूरी, और भारतीय संसाधनों के उपयोग पर लाभ-साझाकरण।"},
+  gu:{c:"નવી દવા",law:"New Drugs and Clinical Trials Rules, 2019, ક્લિનિકલ ટ્રાયલ ડેટા સાથે",ip:"સંપૂર્ણ પેટન્ટ માર્ગ. કોઈપણ જાહેર ખુલાસા પહેલાં ફાઇલિંગનું આયોજન કરો.",abs:"IP મળે તે પહેલાં NBA મંજૂરી, અને ભારતીય સંસાધનોના ઉપયોગ પર લાભ-વહેંચણી."},
+  mr:{c:"नवे औषध",law:"New Drugs and Clinical Trials Rules, 2019, क्लिनिकल चाचणी माहितीसह",ip:"संपूर्ण पेटंट मार्ग. कोणत्याही सार्वजनिक प्रकटीकरणापूर्वी अर्जाचे नियोजन करा.",abs:"IP हक्क मिळण्यापूर्वी NBA मंजुरी, आणि भारतीय संसाधने वापरल्यास लाभ-वाटप."},
+  ta:{c:"புதிய மருந்து",law:"New Drugs and Clinical Trials Rules, 2019, மருத்துவ சோதனைத் தரவுகளுடன்",ip:"முழுமையான காப்புரிமை வழி. பொது வெளிப்பாட்டிற்கு முன்பே தாக்கலைத் திட்டமிடுங்கள்.",abs:"IP வழங்கப்படும் முன் NBA ஒப்புதல், இந்திய வளங்கள் பயன்படுத்தப்பட்டால் நன்மைப் பகிர்வு."}},
+ aahar:{reg:null,en:{c:"Ayurveda Aahar (food)",r:"Food Safety and Standards Authority of India",law:"FSS (Ayurveda Aahar) Regulations, 2022",ip:"Trademark and process patents. Disease-cure claims are not allowed on food.",abs:"SBB intimation for commercial sourcing, subject to cultivated-plant exemptions."},
+  hi:{c:"आयुर्वेद आहार (खाद्य)",r:"भारतीय खाद्य सुरक्षा और मानक प्राधिकरण (FSSAI)",law:"FSS (Ayurveda Aahar) Regulations, 2022",ip:"ट्रेडमार्क और प्रक्रिया पेटेंट। खाद्य पर रोग ठीक करने के दावे की अनुमति नहीं।",abs:"व्यावसायिक सोर्सिंग के लिए SBB को सूचना, खेती किए गए पौधों की छूट के अधीन।"},
+  gu:{c:"આયુર્વેદ આહાર (ખોરાક)",r:"ભારતીય ખાદ્ય સુરક્ષા અને ધોરણ સત્તામંડળ (FSSAI)",law:"FSS (Ayurveda Aahar) Regulations, 2022",ip:"ટ્રેડમાર્ક અને પ્રક્રિયા પેટન્ટ. ખોરાક પર રોગ મટાડવાના દાવાની મંજૂરી નથી.",abs:"વ્યાપારી સોર્સિંગ માટે SBBને જાણ, વાવેતર કરેલા છોડની મુક્તિને આધીન."},
+  mr:{c:"आयुर्वेद आहार (अन्न)",r:"भारतीय अन्न सुरक्षा आणि मानके प्राधिकरण (FSSAI)",law:"FSS (Ayurveda Aahar) Regulations, 2022",ip:"ट्रेडमार्क आणि प्रक्रिया पेटंट. अन्नावर आजार बरा करण्याचे दावे करता येत नाहीत.",abs:"व्यावसायिक खरेदीसाठी SBB ला पूर्वसूचना, लागवडीखालील वनस्पतींच्या सुटीच्या अधीन."},
+  ta:{c:"ஆயுர்வேத ஆகாரம் (உணவு)",r:"இந்திய உணவுப் பாதுகாப்பு மற்றும் தர நிர்ணய ஆணையம் (FSSAI)",law:"FSS (Ayurveda Aahar) Regulations, 2022",ip:"வர்த்தக முத்திரை மற்றும் செயல்முறைக் காப்புரிமைகள். உணவில் நோய் குணப்படுத்தும் கூற்றுகளுக்கு அனுமதி இல்லை.",abs:"வணிகக் கொள்முதலுக்கு SBB அறிவிப்பு, பயிரிடப்பட்ட தாவர விலக்குகளுக்கு உட்பட்டு."}},
+ cosmetic:{reg:null,en:{c:"Cosmetic",r:"CDSCO and State Licensing Authority",law:"Cosmetics Rules, 2020. If sold as an Ayurvedic medicine, Ayush drug licensing applies instead.",ip:"Trademark and design registration. Patents only for genuinely new processes.",abs:"SBB intimation or NBA approval depending on who you are."},
+  hi:{c:"सौंदर्य प्रसाधन",r:"CDSCO और राज्य लाइसेंसिंग प्राधिकरण",law:"Cosmetics Rules, 2020. आयुर्वेदिक औषधि के रूप में बेचने पर आयुष औषधि लाइसेंस लागू होगा।",ip:"ट्रेडमार्क और डिज़ाइन पंजीकरण। पेटेंट केवल वास्तव में नई प्रक्रियाओं के लिए।",abs:"आप कौन हैं इसके अनुसार SBB को सूचना या NBA मंज़ूरी।"},
+  gu:{c:"સૌંદર્ય પ્રસાધન",r:"CDSCO અને રાજ્ય લાઇસન્સિંગ સત્તામંડળ",law:"Cosmetics Rules, 2020. આયુર્વેદિક દવા તરીકે વેચાય તો આયુષ દવા લાઇસન્સ લાગુ પડે.",ip:"ટ્રેડમાર્ક અને ડિઝાઇન નોંધણી. પેટન્ટ ફક્ત ખરેખર નવી પ્રક્રિયાઓ માટે.",abs:"તમે કોણ છો તે મુજબ SBBને જાણ અથવા NBA મંજૂરી."},
+  mr:{c:"सौंदर्य प्रसाधन",r:"CDSCO आणि राज्य परवाना प्राधिकरण",law:"Cosmetics Rules, 2020. आयुर्वेदिक औषध म्हणून विकल्यास आयुष औषध परवाना लागू होतो.",ip:"ट्रेडमार्क आणि डिझाइन नोंदणी. पेटंट फक्त खरोखर नव्या प्रक्रियांसाठी.",abs:"तुम्ही कोण आहात त्यानुसार SBB ला पूर्वसूचना किंवा NBA मंजुरी."},
+  ta:{c:"அழகுசாதனப் பொருள்",r:"CDSCO மற்றும் மாநில உரிம ஆணையம்",law:"Cosmetics Rules, 2020. ஆயுர்வேத மருந்தாக விற்கப்பட்டால் ஆயுஷ் மருந்து உரிமம் பொருந்தும்.",ip:"வர்த்தக முத்திரை மற்றும் வடிவமைப்புப் பதிவு. உண்மையிலேயே புதிய செயல்முறைகளுக்கு மட்டுமே காப்புரிமை.",abs:"நீங்கள் யார் என்பதைப் பொறுத்து SBB அறிவிப்பு அல்லது NBA ஒப்புதல்."}}
+};
+
+(function(){
+const $=id=>document.getElementById(id);
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+/* API base: same server when served by FastAPI, localhost when the file is opened directly */
+const API=location.protocol.startsWith('http')?'':'http://localhost:8000';
+let LANG='en',J='in',busy=false,lastQ='',lastRes=null,prodKey=null,curRes=null;
+const cards=[];
+const HKEY='ipsakti.history';let history=[];try{history=JSON.parse(localStorage.getItem(HKEY)||'[]');}catch(e){history=[];}
+const t=k=>T[LANG][k];
+function esc(s){return String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+
+/* Leaf background */
+const leaf=$('leaf'),NS='http://www.w3.org/2000/svg',paths=[];
+function P(d,c){const p=document.createElementNS(NS,'path');p.setAttribute('d',d);p.setAttribute('class',c);leaf.appendChild(p);paths.push(p);}
+P('M300 30 C 480 170, 560 430, 300 790 C 40 430, 120 170, 300 30 Z','outline');P('M300 50 C 296 300, 304 520, 300 800','rib');
+for(let k=0;k<9;k++){const y=120+k*68,s=Math.sin((k+1)/10*Math.PI)*210+30;
+ P(`M300 ${y} C ${300-s*.35} ${y+10}, ${300-s*.75} ${y+40}, ${300-s} ${y+92}`,'vein');P(`M300 ${y} C ${300+s*.35} ${y+10}, ${300+s*.75} ${y+40}, ${300+s} ${y+92}`,'vein');
+ if(k>0&&k<8){const sx=300-s*.55,sy=y+48;P(`M${sx} ${sy} q -18 -4 -34 -26`,'vein');P(`M${600-sx} ${sy} q 18 -4 34 -26`,'vein');}}
+(function(){const l2=document.createElementNS(NS,'svg');l2.setAttribute('viewBox','0 0 600 820');l2.setAttribute('class','leaf leaf2');l2.setAttribute('aria-hidden','true');
+  l2.innerHTML=leaf.innerHTML;document.querySelector('.bg').appendChild(l2);})();
+if(!reduce){paths.forEach((p,i)=>{const L=p.getTotalLength();p.style.strokeDasharray=L;p.style.strokeDashoffset=L;p.style.transition=`stroke-dashoffset ${1.6+(i%5)*.25}s ease ${.15+i*.04}s`;});
+ requestAnimationFrame(()=>requestAnimationFrame(()=>paths.forEach(p=>p.style.strokeDashoffset=0)));}
+
+/* Language */
+function applyLang(){
+  document.documentElement.lang=LANG;$('lang').value=LANG;
+  document.querySelectorAll('[data-t]').forEach(el=>{const v=t(el.dataset.t);if(typeof v==='string')el.textContent=v;});
+  document.querySelectorAll('[data-sq]').forEach(b=>b.dataset.q=t(b.dataset.sq));
+  $('input').placeholder=t('ph');
+  renderProd();renderSources(curRes);refreshStatusText();
+  cards.forEach(c=>renderAnswer(c.card,c.res,false));
+}
+function setLang(l){if(!T[l]||l===LANG)return;LANG=l;applyLang();}
+$('lang').addEventListener('change',e=>{setLang(e.target.value);toast(t('langSet'));});
+function detect(q){
+  if(/[\u0A80-\u0AFF]/.test(q))return'gu';if(/[\u0B80-\u0BFF]/.test(q))return'ta';
+  if(/[\u0900-\u097F]/.test(q))return(LANG==='mr'||/आहे|मला|माझ्या|माझे|लागेल|येईल|साठी|शकतो|असलेल/.test(q))?'mr':'hi';
+  if(/[a-z]{3,}/i.test(q))return'en';return LANG;}
+
+document.querySelectorAll('.seg button').forEach(b=>b.addEventListener('click',()=>{J=b.dataset.j;document.querySelectorAll('.seg button').forEach(x=>x.setAttribute('aria-pressed',x===b));toast(t(J==='in'?'tIn':'tIntl'));}));
+
+/* Chat */
+const msgs=$('msgs'),thread=$('thread'),input=$('input');
+function scrollEnd(){thread.scrollTo({top:thread.scrollHeight,behavior:reduce?'auto':'smooth'});}
+const AV='<svg class="avatar" viewBox="0 0 34 34" aria-hidden="true"><circle cx="17" cy="17" r="16" fill="#E4EFE8"/><path d="M17 8c5.4 4.2 6 10.4 0 18c-6-7.6-5.4-13.8 0-18z" fill="none" stroke="#2F6B4F" stroke-width="1.5"/><path d="M17 10.5v14" stroke="#2F6B4F" stroke-width="1"/></svg>';
+
+async function ask(q,opts){
+  opts=opts||{};
+  if(busy||!q.trim())return;
+  if(!opts.keep)setLang(detect(q));
+  busy=true;lastQ=q;$('welcome').style.display='none';
+  const u=document.createElement('div');u.className='msg user';
+  u.innerHTML=`<div class="bubble">${esc(q)}</div>`+(/[\u0900-\u0BFF]/.test(q)?`<div class="trans">${esc(t('note'))}</div>`:'');
+  msgs.appendChild(u);
+  const m=document.createElement('div');m.className='msg bot';
+  const st=t('steps'),steps=[st[0],J==='in'?st[1]:st[2],st[3],st[4]];
+  m.innerHTML=AV+`<div class="card"><div class="pipe">${steps.map(s=>`<div><span class="dot"></span>${esc(s)}</div>`).join('')}</div></div>`;
+  msgs.appendChild(m);scrollEnd();
+  const card=m.querySelector('.card'),rows=card.querySelectorAll('.pipe div');
+  /* Progress animation while the server works (last step waits for the answer) */
+  let i=0;rows[0].className='on';
+  const timer=setInterval(()=>{if(i<rows.length-1){rows[i].className='done';i++;rows[i].className='on';}},reduce?300:1400);
+  try{
+    const r=await fetch(API+'/api/ask',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({question:q,jurisdiction:J==='in'?'IN':'INTL',language:LANG,
+        product_category:prodKey?R[prodKey].en.c:null})});
+    if(!r.ok)throw new Error((await r.json().catch(()=>({}))).detail||('HTTP '+r.status));
+    const res=await r.json();
+    clearInterval(timer);
+    if(res.language&&T[res.language]&&res.language!==LANG)setLang(res.language);
+    lastRes=res;cards.push({card,res});renderAnswer(card,res,true);saveHistory(q,res);
+  }catch(e){
+    clearInterval(timer);
+    card.innerHTML=`<div class="escal"><p>${esc(t('err'))}<br><small>${esc(e.message)}</small></p></div>`;
+  }finally{busy=false;scrollEnd();}
+}
+
+function answerHtml(text){
+  const paras=esc(text).split(/\n{2,}/).map(p=>p.trim()).filter(Boolean);
+  return paras.map(p=>'<p>'+p.replace(/\s*\[(\d+)\]/g,(_,n)=>`<sup class="cite" data-n="${n}" tabindex="0">${n}</sup>`).replace(/\n/g,'<br>')+'</p>').join('');
+}
+function srcLine(s){return [s.section&&s.section!=='Preamble'?s.section:'',s.pages?('p. '+s.pages):''].filter(Boolean).join(', ');}
+
+function renderAnswer(card,res,fresh){
+  const c=res.confidence||{score:0,level:'low'},pct=Math.round((c.score||0)*100);
+  const cf=t('conf'),lv=c.level==='high'?['high',cf[0],cf[1]]:c.level==='medium'?['med',cf[2],cf[3]]:['low',cf[4],cf[5]];
+  const srcs=res.sources||[];
+  card.innerHTML=`<div class="answer">${answerHtml(res.answer||'')}</div>
+   <div class="conf lvl-${lv[0]}"><b>${esc(lv[1])} ${pct}%</b><span class="bar"><i style="width:${fresh?0:pct}%"></i></span><span class="why">${esc(lv[2])}</span></div>
+   ${docsUsed(res)}
+   ${res.escalate?`<div class="escal"><p>${esc(t('escLow'))} ${esc(t('escRev'))}</p><button class="act expert" data-exp>${esc(t('askFor'))}</button></div>`:''}
+   ${howFound(res)}
+   <div class="actions">
+    <button class="act" data-listen><svg class="i" viewBox="0 0 24 24"><path d="M5 10v4h3l5 4V6L8 10z"/><path d="M16.5 9a4 4 0 0 1 0 6"/></svg>${esc(t('listen'))}</button>
+    <button class="act" data-copy><svg class="i" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/></svg>${esc(t('copy'))}</button>
+    ${res.escalate?'':`<button class="act" data-exp><svg class="i" viewBox="0 0 24 24"><circle cx="10" cy="8" r="4"/><path d="M3 20c0-3.5 3-6 7-6M15 18l2 2 4-4"/></svg>${esc(t('ask'))}</button>`}
+    <span class="fb"><button class="act${res._fb==='up'?' on':''}" data-fb="up" aria-label="${esc(t('helpful'))}" title="${esc(t('helpful'))}"><svg class="i" viewBox="0 0 24 24"><path d="M7 11v9H4v-9zM7 11l4-8c1.7 0 3 1.3 3 3v3h5a2 2 0 0 1 2 2.3l-1.2 7A2 2 0 0 1 17.8 20H7"/></svg></button><button class="act${res._fb==='down'?' on':''}" data-fb="down" aria-label="${esc(t('notHelpful'))}" title="${esc(t('notHelpful'))}"><svg class="i" viewBox="0 0 24 24"><path d="M17 13V4h3v9zM17 13l-4 8c-1.7 0-3-1.3-3-3v-3H5a2 2 0 0 1-2-2.3l1.2-7A2 2 0 0 1 6.2 4H17"/></svg></button></span>
+   </div>`;
+  if(fresh)requestAnimationFrame(()=>{card.querySelector('.bar i').style.width=pct+'%';});
+  const show=()=>{curRes=res;renderSources(res);};
+  card.querySelectorAll('[data-n]').forEach(el=>{const go=()=>{show();const s=(res.sources||[]).find(x=>String(x.n)===el.dataset.n);if(s&&el.tagName==='BUTTON'){openSource(s);focusSrc(el.dataset.n,res);}else focusSrc(el.dataset.n,res);};el.addEventListener('click',go);el.addEventListener('keydown',e=>{if(e.key==='Enter')go();});});
+  card.querySelectorAll('[data-exp]').forEach(b=>b.addEventListener('click',()=>openExpert(res)));
+  card.querySelectorAll('[data-fb]').forEach(b=>b.addEventListener('click',()=>sendFeedback(res,b.dataset.fb,card)));
+  card.querySelector('[data-copy]').addEventListener('click',()=>{const x=card.querySelector('.answer').innerText;try{navigator.clipboard.writeText(x).then(()=>toast(t('copied')),()=>toast(t('copyNo')));}catch(e){toast(t('copyNo'));}});
+  card.querySelector('[data-listen]').addEventListener('click',()=>{try{const u=new SpeechSynthesisUtterance(card.querySelector('.answer').innerText);u.lang={en:'en-IN',hi:'hi-IN',gu:'gu-IN',mr:'mr-IN',ta:'ta-IN'}[res.language]||'en-IN';speechSynthesis.cancel();speechSynthesis.speak(u);toast(t('reading'));}catch(e){toast(t('audioNo'));}});
+  if(fresh)show();
+}
+
+function renderSources(res){
+  const cnt=$('srcCount'),list=$('srcList');
+  if(!res){cnt.textContent=t('noneYet');list.innerHTML=`<div class="empty-note">${esc(t('srcEmpty'))}</div>`;return;}
+  const srcs=res.sources||[];
+  if(!srcs.length){cnt.textContent='';list.innerHTML=`<div class="empty-note">${esc(t('srcNone'))}</div>`;return;}
+  cnt.textContent=srcs.length+' '+t('cited');
+  list.innerHTML=srcs.map(s=>`<div class="src" id="src-${s.n}" data-src="${s.n}" tabindex="0" role="button"><div class="row"><span class="n">${s.n}</span><div><b>${esc(s.title||s.label)}</b><span class="sec">${esc(srcLine(s))}</span></div></div>
+   ${s.excerpt?`<p class="sec" style="margin:8px 0 0;font-size:12.5px;color:var(--ink-3);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden">${esc(s.excerpt)}</p>`:''}
+   <div class="meta"><span class="pill ${s.jurisdiction==='INTL'?'intl':''}">${esc(t(s.jurisdiction==='INTL'?'pIntl':'pIn'))}</span>${s.is_current?`<span class="pill">${esc(t('pCur'))}</span>`:`<span class="pill warn">${esc(t('sup'))}</span>`}
+   ${s.url?`<a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(t('pOff'))}</a>`:`<span style="margin-left:auto;font-size:12px;color:var(--ink-3)">${esc(t('file'))}: ${esc(s.source_file)}</span>`}</div></div>`).join('');
+  list.querySelectorAll('[data-src]').forEach(el=>{const s=srcs.find(x=>String(x.n)===el.dataset.src);const go=e=>{if(e.target.closest('a'))return;openSource(s);};el.addEventListener('click',go);el.addEventListener('keydown',e=>{if(e.key==='Enter')go(e);});});
+}
+function focusSrc(n,res){const el=$('src-'+n);
+  if(el&&el.offsetParent!==null){document.querySelectorAll('.src.hl').forEach(x=>x.classList.remove('hl'));el.classList.add('hl');el.scrollIntoView({block:'nearest',behavior:reduce?'auto':'smooth'});}
+  else if(!document.querySelector('.modal.wide')&&!ov.classList.contains('open')){const s=(res.sources||[]).find(x=>String(x.n)===String(n));if(s)openSource(s);}}
+
+function renderProd(){
+  const p=$('prod');
+  if(!prodKey){p.className='prod empty';p.innerHTML=`${esc(t('prodEmpty'))}<br><button data-tool="classify">${esc(t('tClassify'))}</button>`;return;}
+  const r=R[prodKey],x=r[LANG],reg=r.reg?RG[r.reg][LANG]:x.r;
+  p.className='prod';p.innerHTML=`<span class="pill">${esc(t('classified'))}</span><div class="cat">${esc(x.c)}</div><dl><div><dt>${esc(t('lReg'))}</dt><dd>${esc(reg)}</dd></div><div><dt>${esc(t('lIp'))}</dt><dd>${esc(x.ip)}</dd></div><div><dt>${esc(t('lAbs'))}</dt><dd>${esc(x.abs)}</dd></div></dl>`;
+}
+
+/* Composer */
+function send(){const q=input.value.trim();if(!q)return;input.value='';input.style.height='auto';ask(q);}
+$('send').addEventListener('click',send);
+input.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send();}});
+input.addEventListener('input',()=>{input.style.height='auto';input.style.height=Math.min(input.scrollHeight,160)+'px';});
+const mic=$('mic');
+mic.addEventListener('click',()=>{if(mic.classList.contains('live'))return;mic.classList.add('live');toast(t('listening'));
+  setTimeout(()=>{mic.classList.remove('live');const l=LANG==='en'?'hi':LANG;ask(T[l].mic);},reduce?300:1600);});
+
+document.addEventListener('click',e=>{
+  const q=e.target.closest('[data-q]');if(q){closeSide();ask(q.dataset.q,{keep:!!q.dataset.keep});return;}
+  const tl=e.target.closest('[data-tool]');if(tl){closeSide();tool(tl.dataset.tool);}
+});
+function tool(k){
+  if(k==='classify')openClassifier();
+  else if(k==='abs')ask(t('s2'),{keep:true});
+  else if(k==='prior')openPrior();
+  else if(k==='forms')openForms();
+  else if(k==='library')openLibrary();
+  else if(k==='desk')openDesk();
+}
+$('newBtn').addEventListener('click',()=>{msgs.innerHTML='';cards.length=0;$('welcome').style.display='';curRes=null;renderSources(null);closeSide();input.focus();});
+$('proBtn').addEventListener('click',openPro);
+const side=$('side'),scrim=$('scrim');
+$('menuBtn').addEventListener('click',()=>{side.classList.add('open');scrim.classList.add('open');});
+function closeSide(){side.classList.remove('open');scrim.classList.remove('open');}
+scrim.addEventListener('click',closeSide);
+
+/* Modals */
+const ov=$('overlay'),md=$('modal');let lastFocus=null;
+const X='<button class="icon-btn close" aria-label="Close" data-close><svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>';
+function openModal(h){lastFocus=document.activeElement;md.classList.remove('wide');md.innerHTML=X+h;ov.classList.add('open');const f=md.querySelector('button:not([data-close]),a');f&&f.focus();}
+function closeModal(){ov.classList.remove('open');lastFocus&&lastFocus.focus&&lastFocus.focus();}
+ov.addEventListener('click',e=>{if(e.target===ov||e.target.closest('[data-close]'))closeModal();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&ov.classList.contains('open'))closeModal();});
+
+function openClassifier(){renderQ('use');}
+function renderQ(k){const q=Q[k];
+  openModal(`<h3>${esc(t('clsH'))}</h3><p class="sub">${esc(t('clsSub'))}</p><div class="steps">${[1,2,3,4].map(i=>`<i class="${i<=q.n?'on':''}"></i>`).join('')}</div>
+   <p class="q">${esc(q.t[LANG])}</p><div class="opts">${q.o.map(o=>`<button data-next="${o[0]}">${esc(o[1][LANG][0])}<small>${esc(o[1][LANG][1])}</small></button>`).join('')}</div>`);
+  md.querySelectorAll('[data-next]').forEach(b=>b.addEventListener('click',()=>{const n=b.dataset.next;Q[n]?renderQ(n):showResult(n);}));}
+function showResult(k){const r=R[k],x=r[LANG],reg=r.reg?RG[r.reg][LANG]:x.r;
+  openModal(`<div class="result"><p class="sub" style="margin:0">${esc(t('resLead'))}</p><div class="cat">${esc(x.c)}</div>
+   <dl><div><dt>${esc(t('lReg'))}</dt><dd>${esc(reg)}</dd></div><div><dt>${esc(t('lLaw'))}</dt><dd>${esc(x.law)}</dd></div><div><dt>${esc(t('lIp'))}</dt><dd>${esc(x.ip)}</dd></div><div><dt>${esc(t('lAbs'))}</dt><dd>${esc(x.abs)}</dd></div></dl>
+   <div class="row-btns"><button class="primary" data-save>${esc(t('useThis'))}</button><button class="ghost" data-restart>${esc(t('restart'))}</button></div></div>`);
+  md.querySelector('[data-restart]').addEventListener('click',openClassifier);
+  md.querySelector('[data-save]').addEventListener('click',()=>{prodKey=k;renderProd();closeModal();toast(t('saved')+' '+x.c);});}
+
+function openExpert(res){
+  res=res||lastRes;
+  openModal(`<h3>${esc(t('exH'))}</h3><p class="sub">${esc(t('exSub'))}</p>
+   <p class="sub" style="background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:10px 12px;color:var(--ink)">${esc((res&&res.question)||lastQ||t('yourQ'))}</p>
+   <label class="expert-row"><input type="radio" name="ex" value="ip_attorney" checked><div><b>${esc(t('exA'))}</b><span>${esc(t('exAS'))}</span></div></label>
+   <label class="expert-row"><input type="radio" name="ex" value="regulatory"><div><b>${esc(t('exR'))}</b><span>${esc(t('exRS'))}</span></div></label>
+   <label class="expert-row"><input type="radio" name="ex" value="abs"><div><b>${esc(t('exB'))}</b><span>${esc(t('exBS'))}</span></div></label>
+   <div class="price"><span>${esc(t('exTime'))}</span><b>₹599</b></div>
+   <div class="row-btns"><button class="primary" data-req>${esc(t('exReq'))}</button><button class="ghost" data-close>${esc(t('cancel'))}</button></div>
+   <p class="sub" style="margin:14px 0 0;font-size:12.5px">${esc(t('exFiling'))}</p>`);
+  md.querySelector('[data-req]').addEventListener('click',async()=>{
+    const type=(md.querySelector('input[name=ex]:checked')||{}).value||'ip_attorney';
+    let tid='';
+    try{const r=await fetch(API+'/api/escalate',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({question:(res&&res.question)||lastQ,answer:res&&res.answer,expert_type:type,language:LANG,confidence:res&&res.confidence?res.confidence.score:null})});
+      if(r.ok)tid=(await r.json()).ticket_id||'';}catch(e){}
+    openModal(`<h3>${esc(t('doneH'))}</h3><p class="sub">${esc(t('doneSub'))}</p>${tid?`<p class="sub"><b>${esc(t('ticket'))}: ${esc(tid)}</b></p>`:''}<div class="row-btns"><button class="primary" data-close>${esc(t('done'))}</button></div>`);
+  });
+}
+function openPro(){
+  openModal(`<h3>${esc(t('proH'))}</h3><p class="sub">${esc(t('proSub'))}</p>
+   <div class="result"><dl><div><dt>${esc(t('included'))}</dt><dd>${esc(t('proList'))}</dd></div></dl></div>
+   <div class="price"><span>${esc(t('proPrice'))}</span><b>₹499</b></div>
+   <div class="row-btns"><button class="primary" data-close>${esc(t('startPro'))}</button><button class="ghost" data-close>${esc(t('stayFree'))}</button></div>`);}
+function linkRow(u,title,sub){return `<a href="${u}" target="_blank" rel="noopener"><div><b>${esc(title)}</b><span>${esc(sub)}</span></div><span>${esc(t('open'))}</span></a>`;}
+function openPrior(){openModal(`<h3>${esc(t('priorH'))}</h3><p class="sub">${esc(t('priorSub'))}</p><div class="links">${linkRow('https://www.tkdl.res.in','Traditional Knowledge Digital Library',t('pTk'))}${linkRow('https://www.lens.org','The Lens',t('pLens'))}${linkRow('https://patents.google.com','Google Patents',t('pGp'))}${linkRow('https://pubmed.ncbi.nlm.nih.gov','PubMed',t('pPub'))}</div>`);}
+function openForms(){openModal(`<h3>${esc(t('formsH'))}</h3><p class="sub">${esc(t('formsSub'))}</p><div class="links">${linkRow('https://ipindia.gov.in','IP India',t('fIp'))}${linkRow('https://nbaindia.org',t('fNbaT'),t('fNba'))}${linkRow('https://ayush.gov.in',t('fAyT'),t('fAy'))}${linkRow('https://foscos.fssai.gov.in','FSSAI FoSCoS',t('fFs'))}${linkRow('https://www.wipo.int','WIPO',t('fWi'))}</div>`);}
+
+/* ---------- Pro features ---------- */
+function howFound(res){
+  const tm=res.timings||{},cm=t('cragMap')||{};
+  const qs=(res.queries||[]).slice(0,5).map(q=>`<li>${esc(q)}</li>`).join('');
+  return `<details class="how"><summary>${esc(t('howFound'))}</summary><dl>
+   <dt>${esc(t('cragL'))}</dt><dd>${esc(cm[res.crag_status]||res.crag_status||'')}${res.crag_attempts?`, ${res.crag_attempts} ${esc(t('attempts'))}`:''}</dd>
+   <dt>${esc(t('langL'))}</dt><dd>${esc(res.language_name||res.language||'')}</dd>
+   ${tm.total?`<dt>${esc(t('took'))}</dt><dd>${tm.total}s</dd>`:''}
+   ${res.removed_unsupported_claims?`<dt>${esc(t('removed'))}</dt><dd>${res.removed_unsupported_claims}</dd>`:''}
+   ${qs?`<dt>${esc(t('qUsed'))}</dt><dd><ul>${qs}</ul></dd>`:''}
+  </dl></details>`;
+}
+function docsUsed(res){
+  const srcs=res.sources||[];if(!srcs.length)return'';
+  const groups=[];const byKey={};
+  srcs.forEach(s=>{const k=s.source_file||s.title||s.label;if(!byKey[k]){byKey[k]={k,title:s.title||s.label,file:s.source_file||'',j:s.jurisdiction,cur:s.is_current,url:s.url,items:[]};groups.push(byKey[k]);}byKey[k].items.push(s);});
+  return `<div class="used"><div class="used-h">${esc(t('docsUsed'))} <span>${groups.length} ${esc(t('pdfs'))}</span></div>${groups.map(g=>{
+    const first=g.items[0],fu=fileUrl(first);
+    const ext=(g.file.split('.').pop()||'doc').slice(0,4).toUpperCase();
+    return `<div class="used-doc"><div class="pdf-ic">${esc(ext)}</div><div class="ud-main"><b>${esc(g.title)}<span class="ud-tags"><span class="pill ${g.j==='INTL'?'intl':''}">${esc(t(g.j==='INTL'?'pIntl':'pIn'))}</span>${g.cur?'':`<span class="pill warn">${esc(t('oldVer'))}</span>`}</span></b>${g.file?`<span class="ud-file">${esc(g.file)}</span>`:''}
+      <div class="ud-cites">${g.items.map(s=>`<button data-n="${s.n}" title="${esc(s.label)}"><b>${s.n}</b>${esc([s.section&&s.section!=='Preamble'?s.section:'',s.pages?'p. '+s.pages:''].filter(Boolean).join(', ')||s.label)}</button>`).join('')}</div></div>
+      ${fu?`<a class="ud-open" href="${esc(fu)}" target="_blank" rel="noopener">${esc(t('open'))}</a>`:(g.url?`<a class="ud-open" href="${esc(g.url)}" target="_blank" rel="noopener">${esc(t('open'))}</a>`:'')}</div>`;}).join('')}</div>`;
+}
+function pageOf(s){const m=String(s.pages||'').match(/\d+/);return m?m[0]:'';}
+function fileUrl(s){return s.source_file?API+'/api/files/'+encodeURIComponent(s.source_file)+(pageOf(s)?'#page='+pageOf(s):''):'';}
+function openSource(s){
+  if(!s)return;const fu=fileUrl(s);
+  openModal(`<h3>${esc(s.title||s.label)}</h3><p class="sub">${esc(srcLine(s))}</p>
+   <div class="meta" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px"><span class="pill ${s.jurisdiction==='INTL'?'intl':''}">${esc(t(s.jurisdiction==='INTL'?'pIntl':'pIn'))}</span>${s.is_current?`<span class="pill">${esc(t('pCur'))}</span>`:`<span class="pill warn">${esc(t('oldVer'))}</span>`}</div>
+   <p class="sub" style="margin:0 0 6px;font-weight:600;color:var(--ink)">${esc(t('excerptL'))}</p>
+   <div class="excerpt">${esc(s.excerpt||'')}</div>
+   <div class="row-btns" style="margin-top:16px">${fu?`<a class="primary" style="text-decoration:none;display:inline-block" href="${esc(fu)}" target="_blank" rel="noopener">${esc(t('openPdf'))}</a>`:''}${s.url?`<a class="ghost" style="text-decoration:none;display:inline-block;color:var(--ink)" href="${esc(s.url)}" target="_blank" rel="noopener">${esc(t('pOff'))}</a>`:''}</div>`);
+  md.classList.add('wide');
+}
+async function sendFeedback(res,rating,card){
+  res._fb=rating;card.querySelectorAll('[data-fb]').forEach(b=>b.classList.toggle('on',b.dataset.fb===rating));
+  toast(t('thanks'));
+  try{await fetch(API+'/api/feedback',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({question:res.question,answer:res.answer,rating,confidence:res.confidence&&res.confidence.score,language:res.language})});}catch(e){}
+  persistHistory();
+}
+/* History (chat history section is intentionally not translated) */
+function persistHistory(){try{localStorage.setItem(HKEY,JSON.stringify(history.slice(0,30)));}catch(e){}}
+function saveHistory(q,res){history=history.filter(h=>h.q!==q);history.unshift({q,res,ts:Date.now()});history=history.slice(0,30);persistHistory();renderHistory();}
+function renderHistory(){
+  const nav=$('recent');
+  if(!history.length){nav.innerHTML='<div class="empty-hist">Your questions will appear here.</div>';return;}
+  nav.innerHTML=history.slice(0,12).map((h,i)=>`<button data-h="${i}" title="${esc(h.q)}"><span class="hist">${esc(h.q)}</span></button>`).join('');
+  nav.querySelectorAll('[data-h]').forEach(b=>b.addEventListener('click',()=>{closeSide();loadHistory(history[+b.dataset.h]);}));
+}
+function loadHistory(h){
+  if(!h||busy)return;
+  msgs.innerHTML='';cards.length=0;$('welcome').style.display='none';
+  if(h.res.language&&T[h.res.language])setLang(h.res.language);
+  const u=document.createElement('div');u.className='msg user';u.innerHTML=`<div class="bubble">${esc(h.q)}</div>`;msgs.appendChild(u);
+  const m=document.createElement('div');m.className='msg bot';m.innerHTML=AV+'<div class="card"></div>';msgs.appendChild(m);
+  const card=m.querySelector('.card');cards.push({card,res:h.res});lastRes=h.res;lastQ=h.q;renderAnswer(card,h.res,false);curRes=h.res;renderSources(h.res);scrollEnd();
+}
+/* Library */
+async function openLibrary(){
+  openModal(`<h3>${esc(t('library'))}</h3><p class="sub">${esc(t('libSub'))}</p><div class="doclist" id="doclist"><div class="pipe"><div class="on"><span class="dot"></span>…</div></div></div>`);md.classList.add('wide');
+  try{const docs=await (await fetch(API+'/api/documents')).json();
+    const el=$('doclist');if(!el)return;
+    el.innerHTML=docs.map(d=>`<div class="doc"><div style="display:flex;gap:10px;align-items:flex-start"><div style="flex:1;min-width:0"><b>${esc(d.title||d.doc_id)}</b><span class="sec" style="display:block;font-size:12.5px;color:var(--ink-3)">${esc(d.source_file||'')}, ${d.chunks} ${esc(t('chunksN'))}${d.num_pages?`, ${d.num_pages} pp.`:''}</span></div>
+      ${d.source_file?`<a href="${API}/api/files/${encodeURIComponent(d.source_file)}" target="_blank" rel="noopener" style="font-size:12.5px;font-weight:600;text-decoration:none;white-space:nowrap">${esc(t('open'))}</a>`:''}</div>
+      <div class="meta" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px"><span class="pill ${d.jurisdiction==='INTL'?'intl':''}">${esc(t(d.jurisdiction==='INTL'?'pIntl':'pIn'))}</span>${d.is_current?`<span class="pill">${esc(t('pCur'))}</span>`:`<span class="pill warn">${esc(t('oldVer'))}</span>`}${d.regime?`<span class="pill" style="background:var(--surface-2);color:var(--ink-2)">${esc(d.regime)}</span>`:''}</div></div>`).join('')||`<div class="empty-note">—</div>`;
+  }catch(e){const el=$('doclist');if(el)el.innerHTML=`<div class="escal"><p>${esc(t('err'))}</p></div>`;}
+}
+/* Expert desk */
+async function openDesk(){
+  openModal(`<h3>${esc(t('expertDesk'))}</h3><p class="sub">${esc(t('deskSub'))}</p><div id="tickets"></div>`);md.classList.add('wide');
+  let rows=[];try{rows=await (await fetch(API+'/api/escalations')).json();}catch(e){$('tickets').innerHTML=`<div class="escal"><p>${esc(t('err'))}</p></div>`;return;}
+  const el=$('tickets');if(!el)return;
+  if(!rows.length){el.innerHTML=`<div class="empty-note">${esc(t('noTickets'))}</div>`;return;}
+  el.innerHTML=rows.slice().reverse().map(r=>`<div class="doc ticket"><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><b style="font-size:13px">#${esc(r.ticket_id)}</b><span class="pill ${r.status==='resolved'?'':'warn'}">${esc(t(r.status==='resolved'?'statusResolved':'statusOpen'))}</span><span style="font-size:12px;color:var(--ink-3);margin-left:auto">${esc((r.created_at||'').replace('T',' '))}</span></div>
+    <p style="margin:8px 0 4px;font-size:14.5px">${esc(r.question)}</p>
+    ${r.status==='resolved'?`<p class="sub" style="margin:6px 0 0"><b>${esc(t('reply'))}:</b> ${esc(r.reply)}</p>`:
+    `<textarea data-reply="${esc(r.ticket_id)}" rows="2" placeholder="${esc(t('replyPh'))}" style="width:100%;margin-top:8px;border:1px solid var(--line-2);border-radius:10px;padding:8px 10px;resize:vertical;background:#fff"></textarea><div class="row-btns" style="margin-top:8px"><button class="ghost" data-resolve="${esc(r.ticket_id)}" style="padding:7px 12px;font-size:13px">${esc(t('sendReply'))}</button></div>`}</div>`).join('');
+  el.querySelectorAll('[data-resolve]').forEach(b=>b.addEventListener('click',async()=>{
+    const id=b.dataset.resolve,ta=el.querySelector(`[data-reply="${id}"]`);if(!ta||!ta.value.trim()){ta&&ta.focus();return;}
+    try{await fetch(API+`/api/escalations/${id}/resolve`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({reply:ta.value.trim()})});}catch(e){}
+    openDesk();
+  }));
+}
+/* Server status */
+async function checkHealth(){
+  const chip=$('status'),txt=$('statusText');
+  try{const h=await (await fetch(API+'/api/health')).json();
+    if(h.status!=='ok')throw 0;
+    let nd='';try{const docs=await (await fetch(API+'/api/documents')).json();nd=docs.filter(d=>d.is_current).length;}catch(e){}
+    chip.className='chip';chip.dataset.nd=nd;chip.dataset.nc=h.chunks;
+    txt.textContent=`${t('online')}, ${nd} ${t('docsN')}, ${h.chunks} ${t('chunksN')}`;
+  }catch(e){chip.className='chip off';txt.textContent=t('offline');}
+}
+function refreshStatusText(){const chip=$('status');if(!chip)return;if(chip.classList.contains('off'))$('statusText').textContent=t('offline');else if(chip.dataset.nc)$('statusText').textContent=`${t('online')}, ${chip.dataset.nd} ${t('docsN')}, ${chip.dataset.nc} ${t('chunksN')}`;}
+
+let tt;function toast(m){const x=$('toast');x.textContent=m;x.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>x.classList.remove('show'),2600);}
+applyLang();renderHistory();checkHealth();setInterval(checkHealth,30000);
+})();
+
+</script>
+</body>
+</html>

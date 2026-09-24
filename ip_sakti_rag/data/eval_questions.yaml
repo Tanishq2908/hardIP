@@ -1,0 +1,38 @@
+# Golden test set. Edit and extend this as you add documents.
+# expect_doc:      part of the doc_id that should appear in the sources (see: python ingest.py --list)
+# expect_section:  section/rule label that should appear (optional)
+# keywords:        words the English answer should contain (case-insensitive)
+# expect_refusal:  true if the system should say it cannot answer
+questions:
+  - q: Is traditional knowledge patentable in India?
+    jurisdiction: IN
+    expect_doc: patents-act
+    expect_section: Section 3
+    keywords: [traditional knowledge, not]
+
+  - q: Is a mere admixture of known ingredients an invention?
+    jurisdiction: IN
+    expect_doc: patents-act
+    expect_section: Section 3
+    keywords: [admixture]
+
+  - q: Must a patent specification disclose the source of biological material used in the invention?
+    jurisdiction: IN
+    expect_doc: patents-act
+    expect_section: Section 10
+    keywords: [source, biological]
+
+  - q: How do I file a request for examination of a patent application?
+    jurisdiction: IN
+    expect_doc: rules
+    keywords: [request for examination]
+
+  - q: क्या पारंपरिक ज्ञान का पेटेंट हो सकता है?
+    jurisdiction: IN
+    expect_doc: patents-act
+    expect_section: Section 3
+    keywords: [traditional knowledge]
+
+  - q: What is the capital of France?
+    jurisdiction: IN
+    expect_refusal: true

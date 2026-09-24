@@ -1,0 +1,35 @@
+# Optional. Copy to data/manifest.yaml and describe your files.
+# Keys are file names (or paths relative to data/raw, or glob patterns).
+# Anything you leave out is inferred automatically.
+documents:
+  patents_act_1970.pdf:
+    doc_id: patents-act-1970
+    title: The Patents Act, 1970
+    short_title: Patents Act, 1970
+    jurisdiction: IN              # IN or INTL
+    regime: patents               # patents, biodiversity_abs, drugs, advertising, food, cosmetics, trademarks, traditional_knowledge
+    doc_type: act                 # act, rules, regulations, treaty, notification, guideline
+    authority: Parliament of India
+    effective_from: 1972-04-20
+    source_url: https://ipindia.gov.in
+
+  patents_amendment_rules_2024.pdf:
+    title: The Patents (Amendment) Rules, 2024
+    jurisdiction: IN
+    regime: patents
+    doc_type: rules
+    effective_from: 2024-03-15
+    source_url: https://ipindia.gov.in
+
+  wipo_gratk_treaty_2024.pdf:
+    title: WIPO Treaty on Intellectual Property, Genetic Resources and Associated Traditional Knowledge
+    short_title: WIPO GRATK Treaty, 2024
+    jurisdiction: INTL
+    regime: traditional_knowledge
+    doc_type: treaty
+    source_url: https://www.wipo.int
+
+  "biodiversity/*.pdf":           # glob: applies to every PDF in data/raw/biodiversity
+    jurisdiction: IN
+    regime: biodiversity_abs
+    source_url: https://nbaindia.org
